@@ -1,0 +1,29 @@
+title USE CASE 6
+
+
+participant User
+participant UI
+participant Weightloss Calculator
+participant Database
+
+activate User
+activate UI
+activate Database
+
+
+
+User->UI:User selects the weightloss estimate
+UI->User:Display option to select a future date 
+User->UI:Select Future Date
+UI->Weightloss Calculator: Sending the future date 
+
+deactivate UI
+
+activate Weightloss Calculator
+Weightloss Calculator->Database: Query my exercise log and calory intake
+Database-->Weightloss Calculator: Return my exercise log and calory intake
+
+Weightloss Calculator->Weightloss Calculator: Calculate Fatloss using the future date selected and my data
+Weightloss Calculator-->>UI: Return the calculated fat loss
+activate UI
+UI-->>User: Display the results to the user
