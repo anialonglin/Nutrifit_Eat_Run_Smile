@@ -1,0 +1,26 @@
+title USE CASE 1: Creating New Profile
+actor User
+participant Splash Screen
+participant User Data Editor
+database Database
+activate User
+activate Splash Screen
+activate Database
+User -> Splash Screen:Start Application
+Splash Screen -> Database:Query list of profiles
+Database -->> Splash Screen:Return list of Profiles
+Splash Screen -> User:Display Profile List
+User -> Splash Screen: Select option to create new profile
+Splash Screen -> User Data Editor: Open profile editor
+activate User Data Editor
+deactivate Splash Screen
+User Data Editor -> User:Display Form For Data Entry
+User -->> User Data Editor:User Provides Data
+User Data Editor -> Database: Create New Profile
+Database -->> User Data Editor: Confirmation
+User Data Editor -->> Splash Screen:Confirmation
+activate Splash Screen
+deactivate User Data Editor
+Splash Screen -> Database:Query list of profiles
+Database -->> Splash Screen:Return list of Profiles
+Splash Screen -> User:Display Profile List

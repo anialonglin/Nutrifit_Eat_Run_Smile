@@ -1,0 +1,1 @@
+This use case primarily focuses on the creation and editing of the user's basic data. Data flows from the user into the UI, then the UI to the Database that stores the user data, then based on the new data the UI for the user is updated.

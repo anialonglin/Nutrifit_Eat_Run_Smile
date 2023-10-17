@@ -1,0 +1,30 @@
+title USE CASE 2: New Meal Entry
+
+actor User
+participant Main UI
+participant Journal
+participant Nutrition Calculator
+database Nutritional Database
+participant User Data Editor
+database Database
+
+activate User
+activate Main UI
+activate Database
+User -> Main UI:Select meal entry option
+Main UI -> User: Input form for meal
+User -->> Main UI:Provides meal information
+Main UI->User Data Editor:Send new meal data
+activate User Data Editor
+User Data Editor->Database: Store the meal entry in the Database
+Database -->> User Data Editor:Confirmation
+User Data Editor -->> Main UI:Confirmation
+deactivate User Data Editor
+Main UI -> Nutrition Calculator:Meal information
+activate Nutrition Calculator
+Nutrition Calculator -> Nutritional Database:Query the nutrient information from the Nutritional Databse
+activate Nutritional Database
+Nutritional Database -->> Nutrition Calculator:Return the nutrient data
+Nutrition Calculator -> Nutrition Calculator:Calculate Nutritional Value
+Nutrition Calculator -->> Main UI:Calculated Nutrition Data
+Main UI-> User:Display the calories per each meal saved

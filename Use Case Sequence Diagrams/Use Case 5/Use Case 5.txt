@@ -1,0 +1,34 @@
+title USE CASE 5: Diet Analysis
+
+actor User
+participant Main UI
+participant Nutrition Calculator
+database Nutritional Database
+database Database
+
+activate User
+activate Nutritional Database
+activate Database
+activate Main UI
+User->Main UI:Select portion analysis option
+Main UI->Database:Query food intake
+Main UI<<--Database:Return food intake
+User<-Main UI:Display daily food intake
+User->Main UI:Select top 5 or top 10 & time period
+Main UI -> Nutrition Calculator:Send data for nutrient analysis
+activate Nutrition Calculator
+Nutrition Calculator->Nutritional Database:Query nutritional data
+Nutrition Calculator<<--Nutritional Database:Return nutritional data
+alt Top 5
+Nutrition Calculator->Nutrition Calculator:Calculate top 5 Average
+Main UI<<--Nutrition Calculator:Return top 5 average
+User<<--Main UI:Display top 5 nutrient analysis
+else Top 10
+Nutrition Calculator->Nutrition Calculator:Calculate top 10 Average
+Main UI<<--Nutrition Calculator:Return top 10 average
+User<<--Main UI:Display top 10 nutrient analysis
+end
+
+Main UI<<--Nutrition Calculator:Return recommended daily portions
+deactivate Nutrition Calculator
+User<<--Main UI:Display recommended daily portions

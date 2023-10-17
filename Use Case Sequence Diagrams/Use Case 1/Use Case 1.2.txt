@@ -1,0 +1,52 @@
+title USE CASE 1: Editing Settings or Profile
+
+actor User
+participant Splash Screen
+participant Main UI
+participant User Data Editor
+participant User Data Editor
+database Database
+activate User
+activate Splash Screen
+activate Database
+User -> Splash Screen:Start Application
+Splash Screen -> Database:Query list of profiles
+Database -->> Splash Screen:Return list of Profiles
+Splash Screen -> User:Display Profile List
+User -> Splash Screen: Select option to open existing profile
+Splash Screen -> Main UI: Open Main UI for selected profile
+deactivate Splash Screen
+activate Main UI
+Main UI -> User: Display Main UI
+opt Edit Profile
+User -> Main UI:Select Edit Profile Option
+Main UI ->User Data Editor:Open profile editor
+deactivate Main UI
+activate User Data Editor
+User Data Editor -> User:Display Form For Data Entry
+User -->> User Data Editor:User Provides Data
+User Data Editor -> Database: Edit Profile
+Database -->> User Data Editor: Confirmation
+User Data Editor -->> Main UI: Confirmation
+deactivate User Data Editor
+activate Main UI
+Main UI -> User: Display Main UI with 
+deactivate Main UI
+end
+opt Edit Settings
+activate Main UI
+
+User -> Main UI:Select Edit Settings Option
+Main UI ->User Data Editor:Open settings editor
+deactivate Main UI
+activate User Data Editor
+User Data Editor -> User:Display Settings
+User -->> User Data Editor:User Changes Settings
+User Data Editor -> Database: Edit Profile
+Database -->> User Data Editor: Confirmation
+User Data Editor -->> Main UI: Confirmation
+deactivate User Data Editor
+activate Main UI
+Main UI -> User: Display Main UI
+deactivate Main UI
+end

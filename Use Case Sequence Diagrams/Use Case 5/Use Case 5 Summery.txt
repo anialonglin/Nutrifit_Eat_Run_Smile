@@ -1,0 +1,1 @@
+This use case centres around analyzing diet information already stored in the user data "Database" upon request that data flows to a calculator that provides the requested analytics to the user. The calculator also takes in data from the Nutritional Database (provided) for it's calculation.
