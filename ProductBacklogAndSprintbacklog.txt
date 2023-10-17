@@ -1,0 +1,39 @@
+Product Backlog:
+
+User Profile Management
+Diet Logging
+Exercise Logging
+Data Visualization
+Weight Loss Prediction
+Canada Food Guide Alignment
+User Interaction Features
+Database Setup
+Documentation & Testing
+User Support & Feedback
+
+
+Sprint Backlog for Sprint 1 (Weeks 1-4):
+Sprint Goal: Basic Application Setup and User Profiles
+
+ID 2: Database Setup
+ID 3: Splash Screen & Profile Setup (part of User Profile Management)
+ID 8: User Interaction Development (Initial Setup)
+ID 9: Documentation & Testing (Complete Documentation)
+
+
+Sprint Backlog for Sprint 2 (Weeks 5-8):
+Sprint Goal: Diet and Exercise Logging, Data Visualization, Weight Loss Prediction, Canada Food Guide Alignment, User Interaction Features
+
+ID 1: Project preparation & Initial Implementation (Continued Refinement)
+ID 4: Diet and Exercise Logging
+ID 5: Data Visualization
+ID 6: Weight Loss Calculator
+ID 7: Canada Food Guide Alignment
+ID 8: User Interaction Development (Additional Features)
+ID 9: Documentation & Testing (Continuous)
+ID 10: User Support & Feedback (Ongoing Integration)
+
+
+Additional Week (Week 9):
+Sprint Goal: Feedback and Wrap-up
+ID 10: Review the progress, address any feedback, make final adjustments, and wrap up
