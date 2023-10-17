@@ -1,28 +1,26 @@
 title Use Case 3
 actor User
-
 participant Main UI
 participant Calorie Calculator
-participant Profile Editor
+participant User Data Editor
 database Database
 activate User
 activate Database
-User->Main UI:User opens profile
 activate Main UI
-Main UI-->>User:Displays main UI
 User->Main UI:User Selects to add a new exercise
 Main UI->Database:Gets existing data from profile
 Database -->> Main UI: Returns Saved Data
-Main UI-->>User:Displays data entry form
+Main UI-->> User:Displays data entry form
 User->Main UI:User Selects fills required data
 Main UI -> Calorie Calculator:Sends all the data required for calculation
 activate Calorie Calculator
-Calorie Calculator --> Profile Editor:New calorie and exercise information
-activate Profile Editor
-Profile Editor --> Database:Update profile
-Database -->> Profile Editor:Confirmation
-Profile Editor -->>Calorie Calculator: Confirmation
-deactivate Profile Editor
-Calorie Calculator -->>Main UI: New calorie and exercise information
+Calorie Calculator -> Calorie Calculator: calulates calorie information
+Calorie Calculator -> User Data Editor:New calorie and exercise information
+activate User Data Editor
+User Data Editor -> Database:Update profile
+Database -->> User Data Editor:Confirmation
+User Data Editor -->> Calorie Calculator: Confirmation
+deactivate User Data Editor
+Calorie Calculator -->> Main UI: New calorie and exercise information
 deactivate Calorie Calculator
 Main UI -->> User: Display Updated Profile

@@ -1,0 +1,30 @@
+title USE CASE 7: Plate Comparison
+
+actor User
+participant Main UI
+participant Plate Calculator
+database Nutritional Database
+database Database
+
+participant Nutritional Database
+
+activate User
+activate Database
+activate Main UI
+activate Nutritional Database
+User->Main UI:Select Plate Alignment option
+Main UI->Plate Calculator:Request plate comparison
+activate Plate Calculator
+Plate Calculator->Nutritional Database:Query CFG recomended plate
+Plate Calculator<<--Nutritional Database:CFG recomended plate
+Plate Calculator->Database:Query food intake
+Plate Calculator<<--Database: Food intake
+Plate Calculator->Nutritional Database:Query nutritional information
+Plate Calculator<<--Nutritional Database:Nutritional information
+Plate Calculator->Plate Calculator:Calculate plate comparason 
+Main UI<<--Plate Calculator:Plate comparison
+
+deactivate Plate Calculator
+User<<--Main UI:Display plate Comparison
+
+

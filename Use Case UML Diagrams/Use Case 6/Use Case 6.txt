@@ -1,29 +1,25 @@
-title USE CASE 6
+title USE CASE 6: Calculating Future Weightloss
 
-
-participant User
-participant UI
+actor User
+participant Main UI
 participant Weightloss Calculator
-participant Database
+database Database
+database Nutritional Database
 
 activate User
-activate UI
+activate Main UI
 activate Database
-
-
-
-User->UI:User selects the weightloss estimate
-UI->User:Display option to select a future date 
-User->UI:Select Future Date
-UI->Weightloss Calculator: Sending the future date 
-
-deactivate UI
-
+activate Nutritional Database
+User->Main UI:User selects the weightloss estimate
+Main UI->User:Display form to select a future date 
+User-->>Main UI: Future date
+Main UI->Weightloss Calculator: Future date 
 activate Weightloss Calculator
-Weightloss Calculator->Database: Query my exercise log and calory intake
-Database-->Weightloss Calculator: Return my exercise log and calory intake
-
-Weightloss Calculator->Weightloss Calculator: Calculate Fatloss using the future date selected and my data
-Weightloss Calculator-->>UI: Return the calculated fat loss
-activate UI
-UI-->>User: Display the results to the user
+Weightloss Calculator->Database: Query exercise and food intake
+Database -->> Weightloss Calculator: Return exercise and food intake
+Weightloss Calculator ->Nutritional Database:Querry nutritional information
+Nutritional Database -->>Weightloss Calculator:Nutritional information 
+Weightloss Calculator->Weightloss Calculator: Calculate Weightloss
+Weightloss Calculator-->>Main UI: Calculated fat loss
+deactivate Weightloss Calculator
+Main UI-->>User: Display the results to the user
