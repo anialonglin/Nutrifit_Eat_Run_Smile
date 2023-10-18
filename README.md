@@ -9,8 +9,8 @@ Using the logged exercise data, the application will calculate the Basal Metabol
 Based on this, the user can find out how much weight they can lose based on their diet and exercise. The user can visualize different data over different time periods for better understanding.
 
 Group Members:
-  Long Lin - anialonglin
-  Amsal Ali - ali-amsal
-  Judah Goldstein - JudahGoldstein
-  Mukul Chauhan - Mukul9090
+  Long Lin - anialonglin;
+  Amsal Ali - ali-amsal;
+  Judah Goldstein - JudahGoldstein;
+  Mukul Chauhan - Mukul9090;
   
