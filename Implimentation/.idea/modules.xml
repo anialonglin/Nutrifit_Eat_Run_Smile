@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/Implimentation.iml" filepath="$PROJECT_DIR$/.idea/Implimentation.iml" />
       <module fileurl="file://$PROJECT_DIR$/exerciseCalc/exerciseCalc.iml" filepath="$PROJECT_DIR$/exerciseCalc/exerciseCalc.iml" />
       <module fileurl="file://$PROJECT_DIR$/journal/journal.iml" filepath="$PROJECT_DIR$/journal/journal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mainUI/mainUI.iml" filepath="$PROJECT_DIR$/mainUI/mainUI.iml" />
       <module fileurl="file://$PROJECT_DIR$/nutritionCalc/nutritionCalc.iml" filepath="$PROJECT_DIR$/nutritionCalc/nutritionCalc.iml" />
       <module fileurl="file://$PROJECT_DIR$/nutritionalDB/nutritionalDB.iml" filepath="$PROJECT_DIR$/nutritionalDB/nutritionalDB.iml" />
       <module fileurl="file://$PROJECT_DIR$/plateCalc/plateCalc.iml" filepath="$PROJECT_DIR$/plateCalc/plateCalc.iml" />
