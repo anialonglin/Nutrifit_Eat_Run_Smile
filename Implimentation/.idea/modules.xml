@@ -9,8 +9,11 @@
       <module fileurl="file://$PROJECT_DIR$/nutritionCalc/nutritionCalc.iml" filepath="$PROJECT_DIR$/nutritionCalc/nutritionCalc.iml" />
       <module fileurl="file://$PROJECT_DIR$/nutritionalDB/nutritionalDB.iml" filepath="$PROJECT_DIR$/nutritionalDB/nutritionalDB.iml" />
       <module fileurl="file://$PROJECT_DIR$/plateCalc/plateCalc.iml" filepath="$PROJECT_DIR$/plateCalc/plateCalc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/settingsEditor/settingsEditor.iml" filepath="$PROJECT_DIR$/settingsEditor/settingsEditor.iml" />
       <module fileurl="file://$PROJECT_DIR$/splashScreen/splashScreen.iml" filepath="$PROJECT_DIR$/splashScreen/splashScreen.iml" />
       <module fileurl="file://$PROJECT_DIR$/userDB/userDB.iml" filepath="$PROJECT_DIR$/userDB/userDB.iml" />
+      <module fileurl="file://$PROJECT_DIR$/userEditor/userEditor.iml" filepath="$PROJECT_DIR$/userEditor/userEditor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/visualizer/visualizer.iml" filepath="$PROJECT_DIR$/visualizer/visualizer.iml" />
       <module fileurl="file://$PROJECT_DIR$/weightlossCalc/weightlossCalc.iml" filepath="$PROJECT_DIR$/weightlossCalc/weightlossCalc.iml" />
     </modules>
   </component>
