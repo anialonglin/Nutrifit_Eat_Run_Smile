@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Implimentation.iml" filepath="$PROJECT_DIR$/.idea/Implimentation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/exerciseCalc/exerciseCalc.iml" filepath="$PROJECT_DIR$/exerciseCalc/exerciseCalc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/journal/journal.iml" filepath="$PROJECT_DIR$/journal/journal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nutritionCalc/nutritionCalc.iml" filepath="$PROJECT_DIR$/nutritionCalc/nutritionCalc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nutritionalDB/nutritionalDB.iml" filepath="$PROJECT_DIR$/nutritionalDB/nutritionalDB.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plateCalc/plateCalc.iml" filepath="$PROJECT_DIR$/plateCalc/plateCalc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/splashScreen/splashScreen.iml" filepath="$PROJECT_DIR$/splashScreen/splashScreen.iml" />
+      <module fileurl="file://$PROJECT_DIR$/userDB/userDB.iml" filepath="$PROJECT_DIR$/userDB/userDB.iml" />
+      <module fileurl="file://$PROJECT_DIR$/weightlossCalc/weightlossCalc.iml" filepath="$PROJECT_DIR$/weightlossCalc/weightlossCalc.iml" />
+    </modules>
+  </component>
+</project>
