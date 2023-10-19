@@ -1,0 +1,12 @@
+title USE CASE 2: Retrieving Granular Data from Journal
+
+User -> Journal:Select Journal entry
+activate Journal 
+Journal -> Database:Query meal data
+Database -->> Journal:Return meal data
+Journal -> Nutrition Calculator:Meal Data
+Nutrition Calculator -> Nutritional Database:Query nutritional data
+Nutritional Database -->> Nutrition Calculator:Return the Nutrient data
+Nutrition Calculator -> Nutrition Calculator:Calculate nutritional breakdown
+Nutrition Calculator -->> Journal: Nutriental breakdown
+Journal -->> User:Display the Nutrient breakdown of the selected meal to the User

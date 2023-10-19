@@ -1,0 +1,1 @@
+This Use case concerns entering exercise information into the program. First information already stored in the database is pre-filled into the data-entry form presented to the user, then the user inputs the exercise information. The exercise information is then passed on to the calculator which derives the calorie information which is then passed back to the UI for the user. 
