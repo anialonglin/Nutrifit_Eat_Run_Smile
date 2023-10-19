@@ -1,0 +1,15 @@
+Design Choices:
+
+Microservices Architecture: The project's design choice includes adopting a microservices architecture to enhance scalability and maintainability. Each functional component is encapsulated within a separate microservice, enabling independent development, testing, and deployment. This design choice aligns with the modularization criteria by promoting high cohesion within each microservice.
+
+Use of RESTful APIs: The project leverages RESTful APIs for communication between microservices. This choice aims to achieve low coupling by ensuring that microservices interact through well-defined interfaces. It also promotes reusability as other systems can easily consume these APIs.
+
+Single Page Application (SPA): The user interface is designed as a SPA using a modern JavaScript framework. This decision improves the user experience and responsiveness. The modularization criteria are addressed by organizing the codebase into reusable components, which results in high cohesion within each component.
+
+Modularization Criteria:
+
+High Cohesion: To achieve high cohesion, the software design promotes grouping related functions and data within individual modules. For instance, within each microservice, business logic, data storage, and API endpoints are grouped to address a specific functional area. This ensures that each module has a clear, well-defined purpose.
+
+Low Coupling: Low coupling is achieved by minimizing dependencies between modules. Each microservice and UI component is designed to communicate through well-defined, independent interfaces (e.g., RESTful APIs). This reduces the impact of changes in one module on others, enhancing system maintainability.
+
+Separation of Concerns: The project follows the principle of separation of concerns to keep distinct aspects of the software separate. This includes separating the user interface (presentation layer) from business logic (application layer) and data access (persistence layer). Each layer is encapsulated within specific modules to ensure that each is responsible for its unique concerns.
