@@ -3,18 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Implimentation.iml" filepath="$PROJECT_DIR$/.idea/Implimentation.iml" />
-      <module fileurl="file://$PROJECT_DIR$/exerciseCalc/exerciseCalc.iml" filepath="$PROJECT_DIR$/exerciseCalc/exerciseCalc.iml" />
-      <module fileurl="file://$PROJECT_DIR$/journal/journal.iml" filepath="$PROJECT_DIR$/journal/journal.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mainUI/mainUI.iml" filepath="$PROJECT_DIR$/mainUI/mainUI.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nutritionCalc/nutritionCalc.iml" filepath="$PROJECT_DIR$/nutritionCalc/nutritionCalc.iml" />
-      <module fileurl="file://$PROJECT_DIR$/nutritionalDB/nutritionalDB.iml" filepath="$PROJECT_DIR$/nutritionalDB/nutritionalDB.iml" />
-      <module fileurl="file://$PROJECT_DIR$/plateCalc/plateCalc.iml" filepath="$PROJECT_DIR$/plateCalc/plateCalc.iml" />
-      <module fileurl="file://$PROJECT_DIR$/settingsEditor/settingsEditor.iml" filepath="$PROJECT_DIR$/settingsEditor/settingsEditor.iml" />
-      <module fileurl="file://$PROJECT_DIR$/splashScreen/splashScreen.iml" filepath="$PROJECT_DIR$/splashScreen/splashScreen.iml" />
-      <module fileurl="file://$PROJECT_DIR$/userDB/userDB.iml" filepath="$PROJECT_DIR$/userDB/userDB.iml" />
-      <module fileurl="file://$PROJECT_DIR$/userEditor/userEditor.iml" filepath="$PROJECT_DIR$/userEditor/userEditor.iml" />
-      <module fileurl="file://$PROJECT_DIR$/visualizer/visualizer.iml" filepath="$PROJECT_DIR$/visualizer/visualizer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/weightlossCalc/weightlossCalc.iml" filepath="$PROJECT_DIR$/weightlossCalc/weightlossCalc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/application/application.iml" filepath="$PROJECT_DIR$/application/application.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dataAccess/dataAccess.iml" filepath="$PROJECT_DIR$/dataAccess/dataAccess.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dataAccess/userData/userData.iml" filepath="$PROJECT_DIR$/dataAccess/userData/userData.iml" />
+      <module fileurl="file://$PROJECT_DIR$/userInterface/userInterface.iml" filepath="$PROJECT_DIR$/userInterface/userInterface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/application/userManager/userManager.iml" filepath="$PROJECT_DIR$/application/userManager/userManager.iml" />
     </modules>
   </component>
 </project>
