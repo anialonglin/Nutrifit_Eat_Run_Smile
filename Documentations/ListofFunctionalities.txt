@@ -1,0 +1,64 @@
+List Of Functionalities
+
+
+Data Loading:
+Load data from CSV files based on the Canadian Nutrient File (CNF) into the application's database.
+Ensure the data is structured correctly according to the CNF user guide.
+
+Data Tabulation:
+Organize and store user-entered diet and exercise data in the database.
+Maintain records of food items consumed, nutrient intake, exercise details, and corresponding timestamps.
+
+Nutrient and Calorie Calculation:
+Calculate nutrient and calorie intake based on the food items logged by the user.
+Utilize the CNF data to determine nutrient composition.
+Consider portion sizes and servings.
+
+
+Food Group Analysis:
+Categorize food items into relevant food groups, aligning with the Canada Food Guide.
+Track and report on the user's food group consumption.
+
+Basal Metabolic Rate (BMR) Calculation:
+Implement a BMR calculator to estimate the user's BMR based on factors like age, gender, weight, and height.
+
+Weight Loss Canculator:
+Use BMR and TDEE calculations to project potential weight loss based on diet and exercise.
+Provide users with insights into how changes in their routine may impact weight.
+
+Data Visualization:
+Integrate JFreeChart for creating various types of data visualizations (line charts, bar plots, pie charts, etc.).
+Allow users to visualize data, such as calorie intake and exercise trends over time.
+
+Time Period Selection:
+Enable users to specify a time period (start date to end date) for data analysis.
+Filter and display data according to the selected time frame.
+
+Graphical User Interface (GUI):
+Develop a user-friendly GUI using Java Swing.
+Organize the interface with modular components to display multiple pieces of information.
+
+External Resource Integration:
+Integrate external resources such as BMR calculators, activity level factors, and dietary guidelines for more accurate calculations and recommendations.
+
+Data Comparison:
+Allow users to compare different time periods or data points to monitor progress and changes in their diet and exercise habits.
+
+Data Export and Reporting:
+Implement functionality for users to export data or generate reports for their records or for sharing with healthcare professionals.
+
+User Authentication and Data Privacy:
+Implement user authentication and ensure data privacy and security for user-entered information.
+
+Feedback and Recommendations:
+Provide users with feedback on their diet and exercise patterns.
+Offer recommendations for improving their adherence to dietary guidelines and exercise goals.
+
+User Preferences and Settings:
+Allow users to customize settings, such as target calorie intake, weight loss goals, and preferred units of measurement.
+
+Error Handling and Validation:
+Implement robust error handling and data validation to ensure data accuracy and user satisfaction.
+
+Accessibility and Cross-Platform Compatibility:
+Ensure the application is accessible to a wide range of users and is compatible with different platforms.
