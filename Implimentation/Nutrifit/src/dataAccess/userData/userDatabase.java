@@ -17,4 +17,5 @@ public class userDatabase {
     }
     public ArrayList<profile> profiles = new ArrayList<profile>();
     public ArrayList<exercise> exerciseLog = new ArrayList<exercise>();
+    public ArrayList<meal> mealLog = new ArrayList<meal>();
 }
