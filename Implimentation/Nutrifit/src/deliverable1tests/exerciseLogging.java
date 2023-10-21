@@ -9,8 +9,6 @@ import static org.junit.Assert.assertEquals;
 public class exerciseLogging {
     @Test
     public void createExercise() { //creating an exercise.
-        userManager userManager = new userManager();
-        exerciseManager exerciseManager = new exerciseManager();
         int profileId = userManager.createUserProfile("John", 35, true, 180, 180);
         int exerciseId = exerciseManager.addExercise(profileId, "exercise1", 10, 2);
         assertEquals(exerciseManager.getExercise(exerciseId).name, "exercise1");
@@ -20,8 +18,6 @@ public class exerciseLogging {
 
     @Test
     public void createExercises() { //creating exercises for multiple profiles.
-        userManager userManager = new userManager();
-        exerciseManager exerciseManager = new exerciseManager();
         int profileId1 = userManager.createUserProfile("John", 35, true, 180, 180);
         int profileId2 = userManager.createUserProfile("Jane", 30, false, 100, 100);
         int exerciseId1 = exerciseManager.addExercise(profileId1, "exercise1", 10, 2);
@@ -35,8 +31,6 @@ public class exerciseLogging {
 
     @Test(expected = IndexOutOfBoundsException.class)//will only pass on exception
     public void deleteExercise() { //makes sure deleting works
-        userManager userManager = new userManager();
-        exerciseManager exerciseManager = new exerciseManager();
         int profileId1 = userManager.createUserProfile("John", 35, true, 180, 180);
         int exerciseId1 = exerciseManager.addExercise(profileId1, "exercise1", 10, 2);
         exerciseManager.deleteExercise(exerciseId1);

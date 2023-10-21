@@ -5,7 +5,7 @@ import dataAccess.userData.mealData;
 import java.util.Date;
 
 public class mealManager {
-    public int addMeal(int ProfileId, String item, Date date){
+    public static int addMeal(int ProfileId, String item, Date date){
         meal meal = new meal(ProfileId, date,item);
         return mealData.addMeal(meal);
     }
