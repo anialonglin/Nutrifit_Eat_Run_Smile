@@ -8,6 +8,8 @@ The application aims at helping the user to break down their calory intake in fo
 Using the logged exercise data, the application will calculate the Basal Metabolic Rate (BMR), based on which the application can calculate the calories burnt based on various levels of exercise. 
 Based on this, the user can find out how much weight they can lose based on their diet and exercise. The user can visualize different data over different time periods for better understanding.
 
+Implementation for deliverables is in the "implementation" folder. 
+
 Group Members:
   Long Lin - anialonglin;
   Amsal Ali - ali-amsal;
