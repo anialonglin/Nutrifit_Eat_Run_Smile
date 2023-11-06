@@ -1,5 +1,7 @@
 package MainUI;
 
+import dataAccess.userData.profile;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.GridBagConstraints;
@@ -7,7 +9,8 @@ import java.awt.GridBagLayout;
 
 public class ProfileManagementPanel extends JPanel {
     private JTextField nameField;
-    private JTextField dobField;
+    private JTextField ageField;
+    private JTextField sexField;
     private JTextField heightField;
     private JTextField weightField;
     private JButton saveProfileButton;
@@ -23,41 +26,46 @@ public class ProfileManagementPanel extends JPanel {
         nameField = new JTextField(15); // Set the column width (adjust as needed)
         addComponent(nameField, 0, 1, constraints);
 
-        addComponent(new JLabel("Date of Birth:"), 1, 0, constraints);
-        dobField = new JTextField(15); // Set the column width
-        addComponent(dobField, 1, 1, constraints);
+        addComponent(new JLabel("Age:"), 1, 0, constraints);
+        ageField = new JTextField(15); // Set the column width
+        addComponent(ageField, 1, 1, constraints);
 
-        addComponent(new JLabel("Height (cm):"), 2, 0, constraints);
+        addComponent(new JLabel("Sex:"), 2, 0, constraints);
+        sexField = new JTextField(15); // Set the column width
+        addComponent(sexField, 2, 1, constraints);
+
+        addComponent(new JLabel("Height (cm):"), 3, 0, constraints);
         heightField = new JTextField(15); // Set the column width
-        addComponent(heightField, 2, 1, constraints);
+        addComponent(heightField, 3, 1, constraints);
 
-        addComponent(new JLabel("Weight (kg):"), 3, 0, constraints);
+        addComponent(new JLabel("Weight (kg):"), 4, 0, constraints);
         weightField = new JTextField(15); // Set the column width
-        addComponent(weightField, 3, 1, constraints);
+        addComponent(weightField, 4, 1, constraints);
 
         // Add a button to save the profile
         saveProfileButton = new JButton("Save Profile");
-        addComponent(saveProfileButton, 4, 0, 2, 1, constraints);
+        addComponent(saveProfileButton, 5, 0, 2, 1, constraints);
 
 
         // Add an action listener to the save button
-//        saveProfileButton.addActionListener(e -> {
-//            // Retrieve profile information from input fields
-//            String name = nameField.getText();
-//            String dob = dobField.getText();
-//            int height = Integer.parseInt(heightField.getText());
-//            double weight = Double.parseDouble(weightField.getText());
-//
-//            // Create a profile object and save it (you can define a Profile class for this)
-//            Profile newProfile = new Profile(name, dob, height, weight);
-//            // Save or update the profile using your database or data management logic
-//
-//            // You can provide user feedback here, e.g., show a confirmation message
-//            JOptionPane.showMessageDialog(this, "Profile saved successfully!");
-//
-//            // Clear the input fields if needed
-//            clearFields();
-//        });
+        saveProfileButton.addActionListener(e -> {
+            // Retrieve profile information from input fields
+            String name = nameField.getText();
+            int age = Integer.parseInt(ageField.getText());
+            boolean sex = Boolean.parseBoolean(sexField.getText());
+            int height = Integer.parseInt(heightField.getText());
+            double weight = Double.parseDouble(weightField.getText());
+
+            // Create a profile object and save it (Profile class)
+            profile newProfile = new profile(name, age, sex, height, weight);
+            // Save or update the profile using database
+
+            // Show a confirmation message
+            JOptionPane.showMessageDialog(this, "Profile saved successfully!");
+
+            // Clear the input fields after save the profile
+            clearFields();
+        });
     }
 
     private void addComponent(Component component, int row, int column, GridBagConstraints constraints) {
@@ -76,7 +84,8 @@ public class ProfileManagementPanel extends JPanel {
 
     private void clearFields() {
         nameField.setText("");
-        dobField.setText("");
+        ageField.setText("");
+        sexField.setText("");
         heightField.setText("");
         weightField.setText("");
     }
