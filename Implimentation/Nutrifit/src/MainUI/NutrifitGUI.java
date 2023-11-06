@@ -50,6 +50,14 @@ public class NutrifitGUI {
                 }
             });
 
+            logExerciseButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Display the ExerciseLoggingPanel
+                    showExerciseLoggingPanel();
+                }
+            });
+
         });
     }
 
@@ -82,6 +90,21 @@ public class NutrifitGUI {
         DietLoggingFrame.add(dietLoggingPanel);
 
         DietLoggingFrame.setVisible(true);
+    }
+
+    private static void showExerciseLoggingPanel() {
+        // Create and display the ExerciseLoggingPanel
+        JFrame ExerciseLoggingFrame = new JFrame("ExerciseLogging Management");
+        ExerciseLoggingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        ExerciseLoggingFrame.setSize(700, 600);
+
+        // Create an instance of the ExerciseLoggingPanel
+        ExerciseLoggingPanel exerciseLoggingPanel = new ExerciseLoggingPanel();
+
+        // Add the ExerciseLoggingPanel to the ExerciseLoggingFrame
+        ExerciseLoggingFrame.add(exerciseLoggingPanel);
+
+        ExerciseLoggingFrame.setVisible(true);
     }
 
 }
