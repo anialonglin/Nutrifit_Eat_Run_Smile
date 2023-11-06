@@ -41,6 +41,23 @@ public class NutrifitGUI {
                     showProfileManagementPanel();
                 }
             });
+
+            logDietButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Display the DietLoggingPanel
+                    showDietLoggingPanel();
+                }
+            });
+
+            logExerciseButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Display the ExerciseLoggingPanel
+                    showExerciseLoggingPanel();
+                }
+            });
+
         });
     }
 
@@ -59,4 +76,35 @@ public class NutrifitGUI {
 
         profileFrame.setVisible(true);
     }
+
+    private static void showDietLoggingPanel() {
+        // Create and display the DietLoggingPanel
+        JFrame DietLoggingFrame = new JFrame("DietLogging Management");
+        DietLoggingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        DietLoggingFrame.setSize(700, 600);
+
+        // Create an instance of the DietLoggingPanel
+        DietLoggingPanel dietLoggingPanel = new DietLoggingPanel();
+
+        // Add the DietLoggingPanel to the DietLoggingFrame
+        DietLoggingFrame.add(dietLoggingPanel);
+
+        DietLoggingFrame.setVisible(true);
+    }
+
+    private static void showExerciseLoggingPanel() {
+        // Create and display the ExerciseLoggingPanel
+        JFrame ExerciseLoggingFrame = new JFrame("ExerciseLogging Management");
+        ExerciseLoggingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        ExerciseLoggingFrame.setSize(700, 600);
+
+        // Create an instance of the ExerciseLoggingPanel
+        ExerciseLoggingPanel exerciseLoggingPanel = new ExerciseLoggingPanel();
+
+        // Add the ExerciseLoggingPanel to the ExerciseLoggingFrame
+        ExerciseLoggingFrame.add(exerciseLoggingPanel);
+
+        ExerciseLoggingFrame.setVisible(true);
+    }
+
 }
