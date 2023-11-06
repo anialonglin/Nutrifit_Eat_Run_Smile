@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 public class NutrifitGUI {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
+
             UIManager.put("Label.font", new Font("Arial", Font.PLAIN, 12)); // Set a default font for labels
             UIManager.put("Button.font", new Font("Arial", Font.PLAIN, 12)); // Set a default font for buttons
 
@@ -36,7 +37,7 @@ public class NutrifitGUI {
             createProfileButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // Add code to display the Profile Management panel here
+                    // Display the Profile Management panel
                     showProfileManagementPanel();
                 }
             });
@@ -48,8 +49,13 @@ public class NutrifitGUI {
         // Create and display the Profile Management panel
         JFrame profileFrame = new JFrame("Profile Management");
         profileFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        profileFrame.setSize(400, 300);
-        // Add UI components for creating/editing profiles here
+        profileFrame.setSize(700, 600);
+
+        // Create an instance of the ProfileManagementPanel
+        ProfileManagementPanel profileManagementPanel = new ProfileManagementPanel();
+
+        // Add the ProfileManagementPanel to the profileFrame
+        profileFrame.add(profileManagementPanel);
 
         profileFrame.setVisible(true);
     }
