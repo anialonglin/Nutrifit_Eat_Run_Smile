@@ -1,5 +1,5 @@
-package deliverable1tests;
-
+//package deliverable1tests;
+//
 //import org.jfree.chart.ChartFactory;
 //import org.jfree.chart.ChartPanel;
 //import org.jfree.chart.JFreeChart;
@@ -7,8 +7,8 @@ package deliverable1tests;
 //import org.jfree.chart.plot.CategoryPlot;
 //import org.jfree.data.category.DefaultCategoryDataset;
 //import javax.swing.*;
-
-public class MealGraphExample {
+//
+//public class MealGraphExample {
 //    public static void main(String[] args) {
 //        // Create a dataset
 //        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -38,4 +38,4 @@ public class MealGraphExample {
 //        frame.pack();
 //        frame.setVisible(true);
 //    }
-}
+//}
