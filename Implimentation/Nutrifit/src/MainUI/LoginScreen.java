@@ -18,20 +18,40 @@ public class LoginScreen extends JPanel {
         // Create components
         JLabel usernameLabel = new JLabel("Username:");
         JLabel passwordLabel = new JLabel("Password:");
-        usernameField = new JTextField(20);
-        passwordField = new JPasswordField(20);
+        usernameField = new JTextField(15);
+        passwordField = new JPasswordField(15);
         JButton loginButton = new JButton("Login");
 
         // Set layout manager
-        setLayout(new GridLayout(3, 2));
+        setLayout(new GridBagLayout());
 
-        // Add components to the panel
-        add(usernameLabel);
-        add(usernameField);
-        add(passwordLabel);
-        add(passwordField);
-        add(new JLabel()); // Empty label for spacing
-        add(loginButton);
+        // Create GridBagConstraints for layout control
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5); // Add some padding
+
+        // Add components to the panel with preferred sizes
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        add(usernameLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        usernameField.setPreferredSize(new Dimension(150, 25)); // Set preferred size
+        add(usernameField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        add(passwordLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        passwordField.setPreferredSize(new Dimension(150, 25)); // Set preferred size
+        add(passwordField, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        add(loginButton, gbc);
+
 
         // Add action listener to the login button
         loginButton.addActionListener(new ActionListener() {
