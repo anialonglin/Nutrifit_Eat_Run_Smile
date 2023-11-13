@@ -1,16 +1,16 @@
 package dataAccess.nutritionData;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 public class database {
     public static void main(String[] args) {
         createDatabase();
     }
 
     private static void createDatabase() {
-        String url = "jdbc:sqlite:nutrition.db";
+        String url = "jdbc:sqlite:/home/judah/Documents/GitHub/EECS3311-PROJECT/Implimentation/Nutrifit/src/dataAccess/nutritionData/nutrition.db";
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData();
