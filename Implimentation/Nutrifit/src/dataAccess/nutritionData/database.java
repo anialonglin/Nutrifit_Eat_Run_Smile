@@ -1,5 +1,7 @@
 package dataAccess.nutritionData;
 
+import com.opencsv.*;
+
 import java.sql.*;
 
 public class database {
@@ -7,6 +9,7 @@ public class database {
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
         createDatabase(url);
         initializeDatabase(url);
+        fillDatabase(url);
     }
 
     private static void createDatabase(String url) {
@@ -39,6 +42,53 @@ public class database {
                 statement.addBatch("CREATE TABLE IF NOT EXISTS yieldAmount(FoodID INT,YieldID INT,YieldAmount INT,YieldDateofEntry TEXT, PRIMARY KEY(FoodID,YieldID), FOREIGN KEY(FoodID) REFERENCES foodName(FoodID), FOREIGN KEY(YieldID) REFERENCES yieldName(YieldID));");
                 statement.executeBatch();
                 System.out.println("Nutrition database initialized. Driver:" + meta.getDriverName());
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void fillDatabase(String url) {
+        String foodNameCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/FOOD NAME.csv";
+//        String foodGroupCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/FOOD GROUP.csv";
+//        String foodSourceCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/FOOD SOURCE.csv";
+//        String measureNameCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/MEASURE NAME.csv";
+//        String conversionFactorsCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/CONVERSION FACTOR.csv";
+//        String nutrientNameCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/NUTRIENT NAME.csv";
+//        String nutrientAmountCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/NUTRIENT AMOUNT.csv";
+//        String nutrientSourceCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/NUTRIENT SOURCE.csv";
+//        String refuseNameCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/REFUSE NAME.csv";
+//        String refuseAmountCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/REFUSE AMOUNT.csv";
+//        String yieldNameCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/YIELD NAME.csv";
+//        String yieldAmountCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/YIELD AMOUNT.csv";
+        try (Connection conn = DriverManager.getConnection(url)) {
+            if (conn != null) {
+                DatabaseMetaData meta = conn.getMetaData();
+                String foodNamesql = "INSERT INTO foodName(FoodID,FoodCode,FoodGroupID,FoodSourceID,FoodDescription,FoodDescriptionF,FoodDateOfEntry,FoodDateOfPublication,CountryCode,ScientificName) VALUES(?,?,?,?,?,?,?,?,?,?)";
+                PreparedStatement foodNameStatement = conn.prepareStatement(foodNamesql);
+                CSVReader reader = null;
+                try{
+                    reader = new CSVReader(new java.io.FileReader(foodNameCSV));
+                    String[] line;
+                    reader.readNext();
+                    while ((line = reader.readNext()) != null) {
+                        foodNameStatement.setInt(1, Integer.parseInt(line[0]));
+                        foodNameStatement.setInt(2, Integer.parseInt(line[1]));
+                        foodNameStatement.setInt(3, Integer.parseInt(line[2]));
+                        foodNameStatement.setInt(4, Integer.parseInt(line[3]));
+                        foodNameStatement.setString(5, line[4]);
+                        foodNameStatement.setString(6, line[5]);
+                        foodNameStatement.setString(7, line[6]);
+                        foodNameStatement.setString(8, line[7]);
+                        foodNameStatement.setInt(9, Integer.parseInt(line[8]));
+                        foodNameStatement.setString(10, line[9]);
+                        foodNameStatement.executeUpdate();
+                    }
+                }
+                catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                System.out.println("Nutrition database filled. Driver:" + meta.getDriverName());
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
