@@ -7,6 +7,7 @@ import java.sql.*;
 public class database {
     public static void main(String[] args) {
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
+//        wipeDB(url);
         createDatabase(url);
         initializeDatabase(url);
         fillDatabase(url);
@@ -67,7 +68,7 @@ public class database {
                 String foodNamesql = "INSERT INTO foodName(FoodID,FoodCode,FoodGroupID,FoodSourceID,FoodDescription,FoodDescriptionF,FoodDateOfEntry,FoodDateOfPublication,CountryCode,ScientificName) VALUES(?,?,?,?,?,?,?,?,?,?)";
                 PreparedStatement foodNameStatement = conn.prepareStatement(foodNamesql);
                 CSVReader reader = null;
-                try{
+                try {
                     reader = new CSVReader(new java.io.FileReader(foodNameCSV));
                     String[] line;
                     reader.readNext();
@@ -84,11 +85,27 @@ public class database {
                         foodNameStatement.setString(10, line[9]);
                         foodNameStatement.executeUpdate();
                     }
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
                 System.out.println("Nutrition database filled. Driver:" + meta.getDriverName());
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void wipeDB(String url) {
+        try (Connection conn = DriverManager.getConnection(url)) {
+            if (conn != null) {
+                DatabaseMetaData meta = conn.getMetaData();
+                Statement statement = conn.createStatement();
+                statement.execute("PRAGMA writable_schema = 1;");
+                statement.execute("delete from sqlite_master where type in ('table', 'index', 'trigger');");
+                statement.execute("PRAGMA writable_schema = 0;");
+                statement.execute("VACUUM;");
+                statement.execute("PRAGMA INTEGRITY_CHECK;");
+                System.out.println("Nutrition database wiped. Driver:" + meta.getDriverName());
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
