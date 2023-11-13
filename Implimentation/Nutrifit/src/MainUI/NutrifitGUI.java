@@ -1,5 +1,8 @@
 package MainUI;
 
+import application.userManager;
+import dataAccess.userData.profile;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,6 +11,9 @@ import java.awt.event.ActionListener;
 public class NutrifitGUI {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
+
+            // Create a test profile
+            int testProfileId = userManager.createUserProfile("Alex", 23, true, 180.0, 70.0);
 
             UIManager.put("Label.font", new Font("Arial", Font.PLAIN, 12)); // Set a default font for labels
             UIManager.put("Button.font", new Font("Arial", Font.PLAIN, 12)); // Set a default font for buttons
@@ -20,15 +26,14 @@ public class NutrifitGUI {
 
             // Create and add GUI components (buttons and labels) to the frame.
             JPanel mainPanel = new JPanel();
-            JButton logDietButton = new JButton("Log Diet");
-            JButton logExerciseButton = new JButton("Log Exercise");
             JButton createProfileButton = new JButton("Create Profile");
+            JButton loginScreenButton = new JButton("Login Profile");
+
             JLabel welcomeLabel = new JLabel("Welcome to Nutrifit!");
             welcomeLabel.setFont(new Font("Arial", Font.PLAIN, 19)); // Set the font explicitly for the Label component
 
-            mainPanel.add(logDietButton);
-            mainPanel.add(logExerciseButton);
             mainPanel.add(createProfileButton);
+            mainPanel.add(loginScreenButton);
             frame.add(mainPanel, BorderLayout.CENTER);
             frame.add(welcomeLabel, BorderLayout.NORTH);
 
@@ -42,23 +47,16 @@ public class NutrifitGUI {
                 }
             });
 
-            logDietButton.addActionListener(new ActionListener() {
+            loginScreenButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // Display the DietLoggingPanel
-                    showDietLoggingPanel();
-                }
-            });
-
-            logExerciseButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    // Display the ExerciseLoggingPanel
-                    showExerciseLoggingPanel();
+                    // Display the Login Screen
+                    showLoginScreen(testProfileId);
                 }
             });
 
         });
+
     }
 
     // Function to display the Profile Management panel
@@ -77,34 +75,61 @@ public class NutrifitGUI {
         profileFrame.setVisible(true);
     }
 
-    private static void showDietLoggingPanel() {
-        // Create and display the DietLoggingPanel
-        JFrame DietLoggingFrame = new JFrame("DietLogging Management");
-        DietLoggingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        DietLoggingFrame.setSize(700, 600);
+//    private static void showLoginScreen() {
+//        // Create and display the Login Screen
+//        JFrame loginFrame = new JFrame("Login Screen");
+//        loginFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//        loginFrame.setSize(700, 600);
+//
+//        // Create an instance of the Login Screen
+//        LoginScreen loginScreen = new LoginScreen();
+//
+//        // Add the LoginScreen to the LoginScreenFrame
+//        loginFrame.add(loginScreen);
+//
+//        // Add a property change listener to listen for a successful login
+//        loginScreen.addPropertyChangeListener("loginSuccess", evt -> {
+//            // If login is successful, close the login frame
+//            loginFrame.dispose();
+//
+//            // Show the User Main UI Screen with the user profile
+//            showUserMainUIScreen((profile) evt.getNewValue());
+//        });
+//
+//        loginFrame.setVisible(true);
+//    }
 
-        // Create an instance of the DietLoggingPanel
-        DietLoggingPanel dietLoggingPanel = new DietLoggingPanel();
 
-        // Add the DietLoggingPanel to the DietLoggingFrame
-        DietLoggingFrame.add(dietLoggingPanel);
 
-        DietLoggingFrame.setVisible(true);
+    private static void showLoginScreen(int testProfileId) {
+        // Create and display the Login Screen
+        JFrame loginFrame = new JFrame("Login Screen");
+        loginFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        loginFrame.setSize(700, 600);
+
+        // Create an instance of the Login Screen with the test profile ID
+        LoginScreen loginScreen = new LoginScreen(testProfileId);
+
+        // Add the LoginScreen to the LoginScreenFrame
+        loginFrame.add(loginScreen);
+
+        // Add a property change listener to listen for a successful login
+        loginScreen.addPropertyChangeListener("loginSuccess", evt -> {
+            // If login is successful, close the login frame
+            loginFrame.dispose();
+
+            // Show the User Main UI Screen with the user profile
+            showUserMainUIScreen((profile) evt.getNewValue());
+        });
+
+        loginFrame.setVisible(true);
     }
 
-    private static void showExerciseLoggingPanel() {
-        // Create and display the ExerciseLoggingPanel
-        JFrame ExerciseLoggingFrame = new JFrame("ExerciseLogging Management");
-        ExerciseLoggingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        ExerciseLoggingFrame.setSize(700, 600);
 
-        // Create an instance of the ExerciseLoggingPanel
-        ExerciseLoggingPanel exerciseLoggingPanel = new ExerciseLoggingPanel();
-
-        // Add the ExerciseLoggingPanel to the ExerciseLoggingFrame
-        ExerciseLoggingFrame.add(exerciseLoggingPanel);
-
-        ExerciseLoggingFrame.setVisible(true);
+    private static void showUserMainUIScreen(profile user) {
+        new UserMainUIScreen(user);
     }
+
+
 
 }
