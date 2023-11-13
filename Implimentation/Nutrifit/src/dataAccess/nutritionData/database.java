@@ -10,7 +10,7 @@ public class database {
     }
 
     private static void createDatabase() {
-        String url = "jdbc:sqlite:src/dataAccess/nutritionData/nutrition.db";
+        String url = "jdbc:sqlite:nutrition.db";
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData();
