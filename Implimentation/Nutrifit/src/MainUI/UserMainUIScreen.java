@@ -7,12 +7,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 public class UserMainUIScreen {
     private profile user;
+    private int testProfileId;
 
     public UserMainUIScreen(profile user) {
         this.user = user;
+        this.testProfileId = testProfileId;
 
         // Create and display the UserMainUIScreen
         JFrame userMainScreenFrame = new JFrame("User Main Screen");
@@ -23,6 +26,8 @@ public class UserMainUIScreen {
         JPanel mainPanel = new JPanel();
         JButton logDietButton = new JButton("Log Diet");
         JButton logExerciseButton = new JButton("Log Exercise");
+//        JButton mealSummaryButton = new JButton("View Meal Summary");
+        JButton CalorieExerciseChartButton = new JButton("Calorie&Exercise Chart");
         JButton editProfileButton = new JButton("Edit Profile");
         JButton deleteProfileButton = new JButton("Delete Profile");
         JButton settingsButton = new JButton("Settings");
@@ -32,6 +37,8 @@ public class UserMainUIScreen {
 
         mainPanel.add(logDietButton);
         mainPanel.add(logExerciseButton);
+//        mainPanel.add(mealSummaryButton);
+        mainPanel.add(CalorieExerciseChartButton);
         mainPanel.add(editProfileButton);
         mainPanel.add(deleteProfileButton);
         mainPanel.add(settingsButton);
@@ -53,7 +60,22 @@ public class UserMainUIScreen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Display the ExerciseLoggingPanel
+                profile user = userManager.getUserProfile(testProfileId);
                 showExerciseLoggingPanel();
+            }
+        });
+
+//        mealSummaryButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                showMealSummaryPanel();
+//            }
+//        });
+
+        CalorieExerciseChartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showCalorieExerciseChart(user);
             }
         });
 
@@ -111,6 +133,33 @@ public class UserMainUIScreen {
 
         exerciseLoggingFrame.setVisible(true);
     }
+
+//    private void showMealSummaryPanel() {
+//        JFrame mealSummaryFrame = new JFrame("MealSummary Management");
+//        mealSummaryFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//        mealSummaryFrame.setSize(700, 600);
+//
+//        MealSummaryPanel mealSummaryPanel = new MealSummaryPanel();
+//
+//        mealSummaryFrame.add(mealSummaryPanel);
+//
+//        mealSummaryFrame.setVisible(true);
+//    }
+
+    private void showCalorieExerciseChart(profile user) {
+        JFrame calorieExerciseChartFrame = new JFrame("CalorieExerciseChart Management");
+        calorieExerciseChartFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        calorieExerciseChartFrame.setSize(1000, 900);
+
+        CalorieExerciseChart calorieExerciseChart = new CalorieExerciseChart("Calorie and Exercise Chart", user);
+
+        calorieExerciseChartFrame.setContentPane(calorieExerciseChart);
+
+        calorieExerciseChartFrame.setVisible(true);
+    }
+
+
+
 
     private void showDeleteProfileConfirmation() {
         int option = JOptionPane.showConfirmDialog(null,
