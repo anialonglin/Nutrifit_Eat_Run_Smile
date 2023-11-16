@@ -1,5 +1,6 @@
 package MainUI;
 
+import application.DietAlignmentCalculator;
 import application.userManager;
 import dataAccess.userData.profile;
 import org.jfree.chart.ChartPanel;
@@ -15,10 +16,13 @@ import java.util.Map;
 public class UserMainUIScreen {
     private profile user;
     private int testProfileId;
+    private DietAlignmentCalculator dietAlignmentCalculator;
 
     public UserMainUIScreen(profile user) {
         this.user = user;
         this.testProfileId = testProfileId;
+        // Initialize the DietAlignmentCalculator
+        this.dietAlignmentCalculator = new DietAlignmentCalculator();
 
         // Create and display the UserMainUIScreen
         JFrame userMainScreenFrame = new JFrame("User Main Screen");
@@ -29,6 +33,7 @@ public class UserMainUIScreen {
         JPanel mainPanel = new JPanel();
         JButton logDietButton = new JButton("Log Diet");
         JButton logExerciseButton = new JButton("Log Exercise");
+        JButton DietAlignmentButton = new JButton("Diet Alignment CFG ");
         JButton WeightLossProjectionButton = new JButton("View Weight Loss Projection");
         JButton CalorieExerciseChartButton = new JButton("Calorie&Exercise Chart");
         JButton nutrientIntakeChartButton = new JButton("Nutrient Intake Chart");
@@ -41,6 +46,7 @@ public class UserMainUIScreen {
 
         mainPanel.add(logDietButton);
         mainPanel.add(logExerciseButton);
+        mainPanel.add(DietAlignmentButton);
         mainPanel.add(WeightLossProjectionButton);
         mainPanel.add(CalorieExerciseChartButton);
         mainPanel.add(nutrientIntakeChartButton);
@@ -74,6 +80,18 @@ public class UserMainUIScreen {
             @Override
             public void actionPerformed(ActionEvent e) {
                 showWeightLossProjectionPanel();
+            }
+        });
+
+        DietAlignmentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Calculate the average plate and get CFG recommendations using DietAlignmentCalculator
+                Map<String, Double> averagePlate = dietAlignmentCalculator.calculateAveragePlate(/* pass necessary parameters */);
+                Map<String, Double> cfgRecommendations = dietAlignmentCalculator.getCfgRecommendations();
+
+                // Display the DietAlignmentPanel with comparison chart
+                showDietAlignmentPanel(averagePlate, cfgRecommendations);
             }
         });
 
@@ -192,6 +210,17 @@ public class UserMainUIScreen {
         weightLossProjectionFrame.add(weightLossProjectionPanel);
 
         weightLossProjectionFrame.setVisible(true);
+    }
+
+    private void showDietAlignmentPanel(Map<String, Double> averagePlate, Map<String, Double> cfgRecommendations) {
+        JFrame dietAlignmentFrame = new JFrame("Diet Alignment Panel");
+        dietAlignmentFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        dietAlignmentFrame.setSize(1000, 800);
+
+        DietAlignmentPanel dietAlignmentPanel = new DietAlignmentPanel(averagePlate, cfgRecommendations);
+
+        dietAlignmentFrame.add(dietAlignmentPanel);
+        dietAlignmentFrame.setVisible(true);
     }
 
     private void showDeleteProfileConfirmation() {
