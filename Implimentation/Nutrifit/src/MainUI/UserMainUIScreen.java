@@ -146,18 +146,6 @@ public class UserMainUIScreen {
         exerciseLoggingFrame.setVisible(true);
     }
 
-//    private void showMealSummaryPanel() {
-//        JFrame mealSummaryFrame = new JFrame("MealSummary Management");
-//        mealSummaryFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//        mealSummaryFrame.setSize(700, 600);
-//
-//        MealSummaryPanel mealSummaryPanel = new MealSummaryPanel();
-//
-//        mealSummaryFrame.add(mealSummaryPanel);
-//
-//        mealSummaryFrame.setVisible(true);
-//    }
-
     private void showCalorieExerciseChart(profile user) {
         JFrame calorieExerciseChartFrame = new JFrame("CalorieExerciseChart Management");
         calorieExerciseChartFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -193,31 +181,6 @@ public class UserMainUIScreen {
 
         nutrientIntakeChartFrame.setVisible(true);
     }
-
-//    private void showNutrientIntakeChart() {
-//        // Create and display the NutrientIntakeChart
-//        JFrame nutrientIntakeChartFrame = new JFrame("Nutrient Intake Chart");
-//        nutrientIntakeChartFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//        nutrientIntakeChartFrame.setSize(1000, 800);
-//
-//        // Create an instance of NutrientIntakeChart
-//        NutrientIntakeChart nutrientIntakeChart = new NutrientIntakeChart("Nutrient Intake Chart");
-//
-//        // Add dummy data for testing (replace with actual data retrieval logic)
-//        nutrientIntakeChart.addDummyData();
-//
-//        // Add the NutrientIntakeChart to the NutrientIntakeChartFrame
-//        nutrientIntakeChartFrame.add(nutrientIntakeChart);
-//
-//        // Make the frame visible after setting the data
-//        nutrientIntakeChartFrame.setVisible(true);
-//
-//        // Call revalidate and repaint after the frame is visible
-//        nutrientIntakeChart.revalidate();
-//        nutrientIntakeChart.repaint();
-//    }
-
-
 
     private void showDeleteProfileConfirmation() {
         int option = JOptionPane.showConfirmDialog(null,
