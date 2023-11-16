@@ -29,7 +29,7 @@ public class UserMainUIScreen {
         JPanel mainPanel = new JPanel();
         JButton logDietButton = new JButton("Log Diet");
         JButton logExerciseButton = new JButton("Log Exercise");
-//        JButton mealSummaryButton = new JButton("View Meal Summary");
+        JButton WeightLossProjectionButton = new JButton("View Weight Loss Projection");
         JButton CalorieExerciseChartButton = new JButton("Calorie&Exercise Chart");
         JButton nutrientIntakeChartButton = new JButton("Nutrient Intake Chart");
         JButton editProfileButton = new JButton("Edit Profile");
@@ -41,7 +41,7 @@ public class UserMainUIScreen {
 
         mainPanel.add(logDietButton);
         mainPanel.add(logExerciseButton);
-//        mainPanel.add(mealSummaryButton);
+        mainPanel.add(WeightLossProjectionButton);
         mainPanel.add(CalorieExerciseChartButton);
         mainPanel.add(nutrientIntakeChartButton);
         mainPanel.add(editProfileButton);
@@ -70,12 +70,12 @@ public class UserMainUIScreen {
             }
         });
 
-//        mealSummaryButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                showMealSummaryPanel();
-//            }
-//        });
+        WeightLossProjectionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showWeightLossProjectionPanel();
+            }
+        });
 
         CalorieExerciseChartButton.addActionListener(new ActionListener() {
             @Override
@@ -180,6 +180,18 @@ public class UserMainUIScreen {
         nutrientIntakeChartFrame.add(nutrientIntakeChart);
 
         nutrientIntakeChartFrame.setVisible(true);
+    }
+
+    private void showWeightLossProjectionPanel() {
+        JFrame weightLossProjectionFrame = new JFrame("Weight Loss Projection");
+        weightLossProjectionFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        weightLossProjectionFrame.setSize(400, 300);
+
+        // Create an instance of the WeightLossProjectionPanel
+        WeightLossProjectionPanel weightLossProjectionPanel = new WeightLossProjectionPanel();
+        weightLossProjectionFrame.add(weightLossProjectionPanel);
+
+        weightLossProjectionFrame.setVisible(true);
     }
 
     private void showDeleteProfileConfirmation() {
