@@ -203,31 +203,31 @@ public class database {
                     }
                     statement.executeBatch();
                     System.out.println(4);
-//                    reader = new CSVReader(new java.io.FileReader(conversionFactorsCSV));
-//                    line = reader.readNext(); //get header out of the way
-//                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
-//                        sql.setLength(0);
-//                        sql.append("INSERT INTO conversionFactors VALUES(").append(line[0]).append(",");
-//                        if (!line[1].isEmpty()) {
-//                            sql.append(line[1]).append(",");
-//                        } else {
-//                            sql.append("NULL,");
-//                        }
-//                        if (!line[2].isEmpty()) {
-//                            sql.append(line[2]).append(",");
-//                        } else {
-//                            sql.append("NULL,");
-//                        }
-//                        if (!line[3].isEmpty()) {
-//                            scratch = line[3].replace("'", "''");
-//                            sql.append("'").append(scratch).append("');");
-//                        } else {
-//                            sql.append("NULL);");
-//                        }
-//                        statement.addBatch(sql.toString());
-//                    }
-//                    statement.executeBatch();
-//                    System.out.println(5);
+                    reader = new CSVReader(new java.io.FileReader(conversionFactorsCSV));
+                    line = reader.readNext(); //get header out of the way
+                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
+                        sql.setLength(0);
+                        sql.append("INSERT INTO conversionFactors VALUES(").append(line[0]).append(",");
+                        if (!line[1].isEmpty()) {
+                            sql.append(line[1]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[2].isEmpty()) {
+                            sql.append(line[2]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[3].isEmpty()) {
+                            scratch = line[3].replace("'", "''");
+                            sql.append("'").append(scratch).append("');");
+                        } else {
+                            sql.append("NULL);");
+                        }
+                        statement.addBatch(sql.toString());
+                    }
+                    statement.executeBatch();
+                    System.out.println(5);
                     reader = new CSVReader(new java.io.FileReader(nutrientNameCSV));
                     line = reader.readNext(); //get header out of the way
                     while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
@@ -318,7 +318,117 @@ public class database {
                     statement.executeBatch();
                     System.out.println(7);
                     reader = new CSVReader(new java.io.FileReader(nutrientSourceCSV));
-
+                    line = reader.readNext(); //get header out of the way
+                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
+                        sql.setLength(0);
+                        sql.append("INSERT INTO nutrientSource VALUES(").append(line[0]).append(",");
+                        if (!line[1].isEmpty()) {
+                            sql.append(line[1]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[2].isEmpty()) {
+                            scratch = line[2].replace("'", "''");
+                            sql.append("'").append(scratch).append("',");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[3].isEmpty()) {
+                            scratch = line[3].replace("'", "''");
+                            sql.append("'").append(scratch).append("');");
+                        } else {
+                            sql.append("NULL);");
+                        }
+                        statement.addBatch(sql.toString());
+                    }
+                    statement.executeBatch();
+                    System.out.println(8);
+                    reader = new CSVReader(new java.io.FileReader(refuseNameCSV));
+                    line = reader.readNext(); //get header out of the way
+                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
+                        sql.setLength(0);
+                        sql.append("INSERT INTO refuseName VALUES(").append(line[0]).append(",");
+                        if (!line[1].isEmpty()) {
+                            scratch = line[1].replace("'", "''");
+                            sql.append("'").append(scratch).append("',");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[2].isEmpty()) {
+                            scratch = line[2].replace("'", "''");
+                            sql.append("'").append(scratch).append("');");
+                        } else {
+                            sql.append("NULL);");
+                        }
+                        statement.addBatch(sql.toString());
+                    }
+                    statement.executeBatch();
+                    System.out.println(9);
+                    reader = new CSVReader(new java.io.FileReader(refuseAmountCSV));
+                    line = reader.readNext(); //get header out of the way
+                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
+                        sql.setLength(0);
+                        sql.append("INSERT INTO refuseAmount VALUES(").append(line[0]).append(",");
+                        if (!line[1].isEmpty()) {
+                            sql.append(line[1]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[2].isEmpty()) {
+                            sql.append(line[2]).append(");");
+                        } else {
+                            sql.append("NULL);");
+                        }
+                        statement.addBatch(sql.toString());
+                    }
+                    statement.executeBatch();
+                    System.out.println(10);
+                    reader = new CSVReader(new java.io.FileReader(yieldNameCSV));
+                    line = reader.readNext(); //get header out of the way
+                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
+                        sql.setLength(0);
+                        sql.append("INSERT INTO yieldName VALUES(").append(line[0]).append(",");
+                        if (!line[1].isEmpty()) {
+                            scratch = line[1].replace("'", "''");
+                            sql.append("'").append(scratch).append("',");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[2].isEmpty()) {
+                            scratch = line[2].replace("'", "''");
+                            sql.append("'").append(scratch).append("');");
+                        } else {
+                            sql.append("NULL);");
+                        }
+                        statement.addBatch(sql.toString());
+                    }
+                    statement.executeBatch();
+                    System.out.println(11);
+                    reader = new CSVReader(new java.io.FileReader(yieldAmountCSV));
+                    line = reader.readNext(); //get header out of the way
+                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
+                        sql.setLength(0);
+                        sql.append("INSERT INTO yieldAmount VALUES(").append(line[0]).append(",");
+                        if (!line[1].isEmpty()) {
+                            sql.append(line[1]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[2].isEmpty()) {
+                            sql.append(line[2]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[3].isEmpty()) {
+                            scratch = line[3].replace("'", "''");
+                            sql.append("'").append(scratch).append("');");
+                        } else {
+                            sql.append("NULL);");
+                        }
+                        statement.addBatch(sql.toString());
+                    }
+                    statement.executeBatch();
+                    System.out.println(12);
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
