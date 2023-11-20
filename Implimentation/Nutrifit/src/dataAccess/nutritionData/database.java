@@ -7,7 +7,7 @@ import java.sql.*;
 public class database {
     public static void main(String[] args) {
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
-//        wipeDB(url);
+        wipeDB(url);
         createDatabase(url);
         initializeDatabase(url);
         fillDatabase(url);
@@ -51,40 +51,274 @@ public class database {
 
     private static void fillDatabase(String url) {
         String foodNameCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/FOOD NAME.csv";
-//        String foodGroupCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/FOOD GROUP.csv";
-//        String foodSourceCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/FOOD SOURCE.csv";
-//        String measureNameCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/MEASURE NAME.csv";
-//        String conversionFactorsCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/CONVERSION FACTOR.csv";
-//        String nutrientNameCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/NUTRIENT NAME.csv";
-//        String nutrientAmountCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/NUTRIENT AMOUNT.csv";
-//        String nutrientSourceCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/NUTRIENT SOURCE.csv";
-//        String refuseNameCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/REFUSE NAME.csv";
-//        String refuseAmountCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/REFUSE AMOUNT.csv";
-//        String yieldNameCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/YIELD NAME.csv";
-//        String yieldAmountCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/YIELD AMOUNT.csv";
+        String foodGroupCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/FOOD GROUP.csv";
+        String foodSourceCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/FOOD SOURCE.csv";
+        String measureNameCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/MEASURE NAME.csv";
+        String conversionFactorsCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/CONVERSION FACTOR.csv";
+        String nutrientNameCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/NUTRIENT NAME.csv";
+        String nutrientAmountCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/NUTRIENT AMOUNT.csv";
+        String nutrientSourceCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/NUTRIENT SOURCE.csv";
+        String refuseNameCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/REFUSE NAME.csv";
+        String refuseAmountCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/REFUSE AMOUNT.csv";
+        String yieldNameCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/YIELD NAME.csv";
+        String yieldAmountCSV = "Nutrifit/src/dataAccess/nutritionData/CFG/YIELD AMOUNT.csv";
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData();
-                String foodNamesql = "INSERT INTO foodName(FoodID,FoodCode,FoodGroupID,FoodSourceID,FoodDescription,FoodDescriptionF,FoodDateOfEntry,FoodDateOfPublication,CountryCode,ScientificName) VALUES(?,?,?,?,?,?,?,?,?,?)";
-                PreparedStatement foodNameStatement = conn.prepareStatement(foodNamesql);
-                CSVReader reader = null;
                 try {
-                    reader = new CSVReader(new java.io.FileReader(foodNameCSV));
-                    String[] line;
+                    CSVReader reader = new CSVReader(new java.io.FileReader(foodNameCSV));
+                    String[] line = reader.readNext();
+                    line = reader.readNext(); //get header out of the way
                     reader.readNext();
-                    while ((line = reader.readNext()) != null) {
-                        foodNameStatement.setInt(1, Integer.parseInt(line[0]));
-                        foodNameStatement.setInt(2, Integer.parseInt(line[1]));
-                        foodNameStatement.setInt(3, Integer.parseInt(line[2]));
-                        foodNameStatement.setInt(4, Integer.parseInt(line[3]));
-                        foodNameStatement.setString(5, line[4]);
-                        foodNameStatement.setString(6, line[5]);
-                        foodNameStatement.setString(7, line[6]);
-                        foodNameStatement.setString(8, line[7]);
-                        foodNameStatement.setInt(9, Integer.parseInt(line[8]));
-                        foodNameStatement.setString(10, line[9]);
-                        foodNameStatement.executeUpdate();
+                    StringBuilder sql = new StringBuilder();
+                    Statement statement = conn.createStatement();
+                    String scratch; //for cleaning inputs
+                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
+                        sql.setLength(0);
+                        sql.append("INSERT INTO foodName VALUES(").append(line[0]).append(",");
+                        if (!line[1].isEmpty()) {
+                            sql.append(line[1]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[2].isEmpty()) {
+                            sql.append(line[2]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[3].isEmpty()) {
+                            sql.append(line[3]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[4].isEmpty()) {
+                            scratch = line[4].replace("'", "''");
+                            sql.append("'").append(scratch).append("',");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[5].isEmpty()) {
+                            scratch = line[5].replace("'", "''");
+                            sql.append("'").append(scratch).append("',");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[6].isEmpty()) {
+                            scratch = line[6].replace("'", "''");
+                            sql.append("'").append(scratch).append("',");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[7].isEmpty()) {
+                            scratch = line[7].replace("'", "''");
+                            sql.append("'").append(scratch).append("',");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[8].isEmpty()) {
+                            sql.append(line[8]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[9].isEmpty()) {
+                            scratch = line[9].replace("'", "''");
+                            sql.append("'").append(scratch).append("');");
+                        } else {
+                            sql.append("NULL);");
+                        }
+                        statement.addBatch(sql.toString());
                     }
+                    statement.executeBatch();
+                    System.out.println(1);
+                    reader = new CSVReader(new java.io.FileReader(foodGroupCSV));
+                    line = reader.readNext(); //get header out of the way
+                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
+                        sql.setLength(0);
+                        sql.append("INSERT INTO foodGroup VALUES(").append(line[0]).append(",");
+                        if (!line[1].isEmpty()) {
+                            sql.append(line[1]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[2].isEmpty()) {
+                            scratch = line[2].replace("'", "''");
+                            sql.append("'").append(scratch).append("',");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[3].isEmpty()) {
+                            scratch = line[3].replace("'", "''");
+                            sql.append("'").append(scratch).append("');");
+                        } else {
+                            sql.append("NULL);");
+                        }
+                        statement.addBatch(sql.toString());
+                    }
+                    statement.executeBatch();
+                    System.out.println(2);
+                    reader = new CSVReader(new java.io.FileReader(foodSourceCSV));
+                    line = reader.readNext(); //get header out of the way
+                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
+                        sql.setLength(0);
+                        sql.append("INSERT INTO foodSource VALUES(").append(line[0]).append(",");
+                        if (!line[1].isEmpty()) {
+                            sql.append(line[1]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[2].isEmpty()) {
+                            scratch = line[2].replace("'", "''");
+                            sql.append("'").append(scratch).append("',");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[3].isEmpty()) {
+                            scratch = line[3].replace("'", "''");
+                            sql.append("'").append(scratch).append("');");
+                        } else {
+                            sql.append("NULL);");
+                        }
+                        statement.addBatch(sql.toString());
+                    }
+                    statement.executeBatch();
+                    System.out.println(3);
+                    reader = new CSVReader(new java.io.FileReader(measureNameCSV));
+                    line = reader.readNext(); //get header out of the way
+                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
+                        sql.setLength(0);
+                        sql.append("INSERT INTO measureName VALUES(").append(line[0]).append(",");
+                        if (!line[1].isEmpty()) {
+                            scratch = line[1].replace("'", "''");
+                            sql.append("'").append(scratch).append("',");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[2].isEmpty()) {
+                            scratch = line[2].replace("'", "''");
+                            sql.append("'").append(scratch).append("');");
+                        } else {
+                            sql.append("NULL);");
+                        }
+                        statement.addBatch(sql.toString());
+                    }
+                    statement.executeBatch();
+                    System.out.println(4);
+//                    reader = new CSVReader(new java.io.FileReader(conversionFactorsCSV));
+//                    line = reader.readNext(); //get header out of the way
+//                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
+//                        sql.setLength(0);
+//                        sql.append("INSERT INTO conversionFactors VALUES(").append(line[0]).append(",");
+//                        if (!line[1].isEmpty()) {
+//                            sql.append(line[1]).append(",");
+//                        } else {
+//                            sql.append("NULL,");
+//                        }
+//                        if (!line[2].isEmpty()) {
+//                            sql.append(line[2]).append(",");
+//                        } else {
+//                            sql.append("NULL,");
+//                        }
+//                        if (!line[3].isEmpty()) {
+//                            scratch = line[3].replace("'", "''");
+//                            sql.append("'").append(scratch).append("');");
+//                        } else {
+//                            sql.append("NULL);");
+//                        }
+//                        statement.addBatch(sql.toString());
+//                    }
+//                    statement.executeBatch();
+//                    System.out.println(5);
+                    reader = new CSVReader(new java.io.FileReader(nutrientNameCSV));
+                    line = reader.readNext(); //get header out of the way
+                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
+                        sql.setLength(0);
+                        sql.append("INSERT INTO nutrientName VALUES(").append(line[0]).append(",");
+                        if (!line[1].isEmpty()) {
+                            sql.append(line[1]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[2].isEmpty()) {
+                            scratch = line[2].replace("'", "''");
+                            sql.append("'").append(scratch).append("',");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[3].isEmpty()) {
+                            scratch = line[3].replace("'", "''");
+                            sql.append("'").append(scratch).append("',");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[4].isEmpty()) {
+                            scratch = line[4].replace("'", "''");
+                            sql.append("'").append(scratch).append("',");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[5].isEmpty()) {
+                            scratch = line[5].replace("'", "''");
+                            sql.append("'").append(scratch).append("',");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[6].isEmpty()) {
+                            scratch = line[6].replace("'", "''");
+                            sql.append("'").append(scratch).append("',");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[7].isEmpty()) {
+                            sql.append(line[7]).append(");");
+                        } else {
+                            sql.append("NULL);");
+                        }
+                        statement.addBatch(sql.toString());
+                    }
+                    statement.executeBatch();
+                    System.out.println(6);
+                    reader = new CSVReader(new java.io.FileReader(nutrientAmountCSV));
+                    line = reader.readNext(); //get header out of the way
+                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
+                        sql.setLength(0);
+                        sql.append("INSERT INTO nutrientAmount VALUES(").append(line[0]).append(",");
+                        if (!line[1].isEmpty()) {
+                            sql.append(line[1]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[2].isEmpty()) {
+                            sql.append(line[2]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[3].isEmpty()) {
+                            sql.append(line[3]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[4].isEmpty()) {
+                            sql.append(line[4]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[5].isEmpty()) {
+                            sql.append(line[5]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[6].isEmpty()) {
+                            scratch = line[6].replace("'", "''");
+                            sql.append(scratch).append(");");
+                        } else {
+                            sql.append("NULL);");
+                        }
+                        statement.addBatch(sql.toString());
+                    }
+                    statement.executeBatch();
+                    System.out.println(7);
+                    reader = new CSVReader(new java.io.FileReader(nutrientSourceCSV));
+
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
