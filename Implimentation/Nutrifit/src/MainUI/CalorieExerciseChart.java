@@ -1,6 +1,6 @@
 package MainUI;
 
-import dataAccess.userData.profile;
+import dataAccess.HC_Old_user_data.profile;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
