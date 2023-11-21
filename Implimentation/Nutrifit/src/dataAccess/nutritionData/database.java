@@ -1,6 +1,6 @@
 package dataAccess.nutritionData;
 
-import com.opencsv.*;
+import com.opencsv.CSVReader;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -8,6 +8,7 @@ import java.util.HashMap;
 public class database {
 
     private static database instance = null;
+
     public static database getInstance() {
         if (instance == null) {
             instance = new database();
@@ -15,7 +16,7 @@ public class database {
         return instance;
     }
 
-    public static void loadDatabase(){
+    public static void loadDatabase() {
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
         wipeDB(url);
         createDatabase(url);
@@ -217,30 +218,34 @@ public class database {
                     }
                     statement.executeBatch();
                     System.out.println(4);
-//                    reader = new CSVReader(new java.io.FileReader(conversionFactorsCSV));
-//                    line = reader.readNext(); //get header out of the way
-//                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
-//                        sql.setLength(0);
-//                        sql.append("INSERT INTO conversionFactors VALUES(").append(line[0]).append(",");
-//                        if (!line[1].isEmpty()) {
-//                            sql.append(line[1]).append(",");
-//                        } else {
-//                            sql.append("NULL,");
+                    reader = new CSVReader(new java.io.FileReader(conversionFactorsCSV));
+                    line = reader.readNext(); //get header out of the way
+                    long time = System.currentTimeMillis();
+                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
+                        sql.setLength(0);
+                        sql.append("INSERT INTO conversionFactors VALUES(").append(line[0]).append(",");
+                        if (!line[1].isEmpty()) {
+                            sql.append(line[1]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[2].isEmpty()) {
+                            sql.append(line[2]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[3].isEmpty()) {
+                            scratch = line[3].replace("'", "''");
+                            sql.append("'").append(scratch).append("');");
+                        } else {
+                            sql.append("NULL);");
+                        }
+                        statement.execute(sql.toString());
+//                        if(time + 1800000 < System.currentTimeMillis()){
+//                            System.out.println("breaking for time, database is functional, but not full for conversion factors, left alone for longer the database would eventually be complete");
+//                            break;
 //                        }
-//                        if (!line[2].isEmpty()) {
-//                            sql.append(line[2]).append(",");
-//                        } else {
-//                            sql.append("NULL,");
-//                        }
-//                        if (!line[3].isEmpty()) {
-//                            scratch = line[3].replace("'", "''");
-//                            sql.append("'").append(scratch).append("');");
-//                        } else {
-//                            sql.append("NULL);");
-//                        }
-//                        statement.addBatch(sql.toString());
-//                    }
-//                    statement.executeBatch();
+                    }
                     System.out.println(5);
                     reader = new CSVReader(new java.io.FileReader(nutrientNameCSV));
                     line = reader.readNext(); //get header out of the way
@@ -293,7 +298,7 @@ public class database {
                     System.out.println(6);
                     reader = new CSVReader(new java.io.FileReader(nutrientAmountCSV));
                     line = reader.readNext(); //get header out of the way
-                    long time = System.currentTimeMillis();
+                    time = System.currentTimeMillis();
                     while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
                         sql.setLength(0);
                         sql.append("INSERT INTO nutrientAmount VALUES(").append(line[0]).append(",");
@@ -322,16 +327,17 @@ public class database {
                         } else {
                             sql.append("NULL,");
                         }
-//                        if (!line[6].isEmpty()) {
-//                            scratch = line[6].replace("'", "''");
-//                            sql.append(scratch).append(");");
-//                        } else {
+                        if (!line[6].isEmpty()) {
+                            scratch = line[6].replace("'", "''");
+                            sql.append(scratch).append(");");
+                        } else {
                             sql.append("NULL);");
-//                        }
-                        statement.execute(sql.toString());
-                        if(time + 15000 < System.currentTimeMillis()){
-                           break;
                         }
+                        statement.execute(sql.toString());
+//                        if(time + 1800000 < System.currentTimeMillis()){
+//                            System.out.println("breaking for time, database is functional, but not full for nutrient amounts, left alone for longer the database would eventually be complete");
+//                           break;
+//                        }
                     }
                     System.out.println(7);
                     reader = new CSVReader(new java.io.FileReader(nutrientSourceCSV));
@@ -433,8 +439,8 @@ public class database {
         }
     }
 
-    public static HashMap listFoods(){
-HashMap<String, String> foodList = new HashMap<>();
+    public static HashMap listFoods() {
+        HashMap<String, String> foodList = new HashMap<>();
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {

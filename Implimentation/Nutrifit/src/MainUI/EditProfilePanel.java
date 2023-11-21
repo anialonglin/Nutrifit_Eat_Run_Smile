@@ -1,44 +1,40 @@
 package MainUI;
 
-import dataAccess.HC_Old_user_data.profile;
+import application.userManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class EditProfilePanel extends JPanel {
-    private profile user;
 
-    public EditProfilePanel(profile user) {
-        this.user = user;
-
+    public EditProfilePanel(String username) {
         setLayout(new GridLayout(6, 2, 10, 10));
-
+        ArrayList<String> user = userManager.getUserProfile(username);
         JLabel nameLabel = new JLabel("Name:");
-        JTextField nameField = new JTextField(user.getName());
+        JTextField nameField = new JTextField(user.get(0));
+        nameField.setEnabled(false);
         JLabel ageLabel = new JLabel("Age:");
-        JTextField ageField = new JTextField(String.valueOf(user.getAge()));
+        JTextField ageField = new JTextField(user.get(1));
         JLabel sexLabel = new JLabel("Sex:");
-        JTextField sexField = new JTextField(String.valueOf(user.isSex()));
+        JTextField sexField = new JTextField(user.get(2));
         JLabel heightLabel = new JLabel("Height (cm):");
-        JTextField heightField = new JTextField(String.valueOf(user.getHeight()));
+        JTextField heightField = new JTextField(user.get(3));
         JLabel weightLabel = new JLabel("Weight (kg):");
-        JTextField weightField = new JTextField(String.valueOf(user.getWeight()));
+        JTextField weightField = new JTextField(user.get(4));
 
         JButton saveButton = new JButton("Save");
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Retrieve edited information
-                String newName = nameField.getText();
-                int newAge = Integer.parseInt(ageField.getText());
-                // Retrieve other fields as needed
-
                 // Update the user's profile
-                user.setName(newName);
-                user.setAge(newAge);
-                // Update other fields as needed
+                userManager.setAge(username, Integer.parseInt(ageField.getText()));
+                userManager.setSex(username, sexField.getText());
+                userManager.setHeight(username, Double.parseDouble(heightField.getText()));
+                userManager.setWeight(username, Double.parseDouble(weightField.getText()));
 
                 // Print the updated profile to the console
                 System.out.println("Updated Profile successfully!");

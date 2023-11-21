@@ -1,6 +1,5 @@
 package MainUI;
 
-import dataAccess.HC_Old_user_data.profile;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -19,12 +18,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CalorieExerciseChart extends JPanel {
-    private profile user;
-    private XYSeries calorieSeries;
-    private XYSeries exerciseSeries;
+    private static String username;
+    private final XYSeries calorieSeries;
+    private final XYSeries exerciseSeries;
 
-    public CalorieExerciseChart(String title, profile user) {
-        this.user = user;
+    public CalorieExerciseChart(String title, String username) {
+        CalorieExerciseChart.username = username;
 
         calorieSeries = new XYSeries("Calorie Intake");
         exerciseSeries = new XYSeries("Exercise");
@@ -36,8 +35,17 @@ public class CalorieExerciseChart extends JPanel {
         chartPanel.setPreferredSize(new Dimension(800, 600));
         add(chartPanel);
 
-        // Add sample data for testing
-        addSampleData();
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            CalorieExerciseChart chart = new CalorieExerciseChart("Calorie and Exercise Chart", username);
+            JFrame frame = new JFrame("CalorieExerciseChart Management");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(800, 600);
+            frame.add(chart);
+            frame.setVisible(true);
+        });
     }
 
     private XYDataset createDataset() {
@@ -48,13 +56,7 @@ public class CalorieExerciseChart extends JPanel {
     }
 
     private JFreeChart createChart(XYDataset dataset, String title) {
-        JFreeChart chart = ChartFactory.createXYBarChart(
-                title,
-                "Date",
-                false,
-                "Value",
-                (IntervalXYDataset) dataset
-        );
+        JFreeChart chart = ChartFactory.createXYBarChart(title, "Date", false, "Value", (IntervalXYDataset) dataset);
 
         XYPlot plot = (XYPlot) chart.getPlot();
         plot.setDomainPannable(true);
@@ -76,30 +78,5 @@ public class CalorieExerciseChart extends JPanel {
     public void addDataPoint(Date date, double calorieIntake, double exercise) {
         calorieSeries.add(date.getTime(), calorieIntake);
         exerciseSeries.add(date.getTime(), exercise);
-    }
-
-    // Method to add sample data for testing
-    private void addSampleData() {
-        // Add data for five consecutive days
-        addDataPoint(new Date(1635763200000L), 2000, 30);
-        addDataPoint(new Date(1635849600000L), 1800, 40);
-        addDataPoint(new Date(1635936000000L), 2200, 20);
-        addDataPoint(new Date(1636022400000L), 2100, 35);
-        addDataPoint(new Date(1636108800000L), 1900, 25);
-    }
-
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            profile testProfile = new profile("Test User", 25, true, 175.0, 70.0);
-
-            CalorieExerciseChart chart = new CalorieExerciseChart("Calorie and Exercise Chart", testProfile);
-
-            JFrame frame = new JFrame("CalorieExerciseChart Management");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(800, 600);
-            frame.add(chart);
-            frame.setVisible(true);
-        });
     }
 }

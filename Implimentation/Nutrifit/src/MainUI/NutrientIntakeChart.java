@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NutrientIntakeChart extends JPanel {
-    private ChartPanel chartPanel;
-    private DefaultPieDataset dataset;
+    private final ChartPanel chartPanel;
+    private final DefaultPieDataset dataset;
 
     public NutrientIntakeChart(String title) {
         this.dataset = createDataset();  // Initialize the dataset
@@ -22,35 +22,6 @@ public class NutrientIntakeChart extends JPanel {
         chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(800, 600));
         add(chartPanel);
-    }
-
-    private JFreeChart createChart(String title) {
-        JFreeChart chart = ChartFactory.createPieChart(
-                title,
-                dataset,
-                true,
-                true,
-                false
-        );
-
-        return chart;
-    }
-
-    private DefaultPieDataset createDataset() {
-        return new DefaultPieDataset();
-    }
-
-    public void updateNutrientData(Map<String, Double> nutrientData) {
-        // Clear existing data
-        dataset.clear();
-
-        // Add new data
-        for (Map.Entry<String, Double> entry : nutrientData.entrySet()) {
-            dataset.setValue(entry.getKey(), entry.getValue());
-        }
-
-        // Notify the chart that the dataset has changed
-        ((PiePlot) chartPanel.getChart().getPlot()).setDataset(dataset);
     }
 
     public static void main(String[] args) {
@@ -72,5 +43,26 @@ public class NutrientIntakeChart extends JPanel {
             frame.add(nutrientIntakeChart);
             frame.setVisible(true);
         });
+    }
+
+    private JFreeChart createChart(String title) {
+        return ChartFactory.createPieChart(title, dataset, true, true, false);
+    }
+
+    private DefaultPieDataset createDataset() {
+        return new DefaultPieDataset();
+    }
+
+    public void updateNutrientData(Map<String, Double> nutrientData) {
+        // Clear existing data
+        dataset.clear();
+
+        // Add new data
+        for (Map.Entry<String, Double> entry : nutrientData.entrySet()) {
+            dataset.setValue(entry.getKey(), entry.getValue());
+        }
+
+        // Notify the chart that the dataset has changed
+        ((PiePlot) chartPanel.getChart().getPlot()).setDataset(dataset);
     }
 }

@@ -6,13 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class DietLoggingPanel extends JPanel {
-    private JTextField dateField;
-    private JComboBox<String> mealTypeComboBox;
-    private JTextField foodItemField;
-    private JTextField quantityField;
-    private JButton logDietButton;
+    private final JTextField dateField;
+    private final JComboBox<String> mealTypeComboBox;
+    private final JTextField foodItemField;
+    private final JTextField quantityField;
+    private final JButton logDietButton;
 
-    public DietLoggingPanel() {
+    public DietLoggingPanel(String username) {
         setLayout(new GridBagLayout()); // Use GridBagLayout for more control
 
         GridBagConstraints constraints = new GridBagConstraints();
@@ -45,20 +45,9 @@ public class DietLoggingPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Add code to log the diet entry here
-                logDietEntry();
+                logDietEntry(username);
             }
         });
-
-        // Add a button to reload the database
-        JButton reloadDatabaseButton = new JButton("Reload Database");
-        reloadDatabaseButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Add code to reload the database here
-                reloadDatabase();
-            }
-        });
-        addComponent(reloadDatabaseButton, 5, 1, 1, 1, constraints);
     }
 
     private void addComponent(Component component, int row, int column, GridBagConstraints constraints) {
@@ -75,15 +64,15 @@ public class DietLoggingPanel extends JPanel {
         add(component, constraints);
     }
 
-    private void logDietEntry() {
+    private void logDietEntry(String username) {
         // Retrieve diet entry information from input fields
         String date = dateField.getText();
         String mealType = (String) mealTypeComboBox.getSelectedItem();
         String foodItem = foodItemField.getText();
-        String quantity = quantityField.getText();
+        int quantity = Integer.parseInt(quantityField.getText());
 
         // Add code to save the diet entry to your data storage (e.g., database)
-
+        application.mealManager.addMeal(username, date, mealType, foodItem, quantity);
         // Show a confirmation message
         JOptionPane.showMessageDialog(this, "Diet entry logged successfully!");
 
@@ -92,9 +81,9 @@ public class DietLoggingPanel extends JPanel {
     }
 
     private void reloadDatabase() {
-        // Add code to reload the database
+        // Add code to reload the database;
         // This can include fetching updated data, refreshing UI, etc.
-        JOptionPane.showMessageDialog(this, "Database Reloaded!");
+        JOptionPane.showMessageDialog(this, "database Reloaded!");
     }
 
     private void clearFields() {

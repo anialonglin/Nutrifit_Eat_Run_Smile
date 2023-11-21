@@ -1,46 +1,38 @@
 package application;
 
-import dataAccess.HC_Old_user_data.profile;
-import dataAccess.HC_Old_user_data.profileData;
+import java.util.ArrayList;
 
 public class userManager {
-    public static int createUserProfile(String name, int age, boolean sex, double height, double weight) {
-        profile profile = new profile(name,age,sex,height,weight);
-        return profileData.createProfile(profile);
+    public static void createUserProfile(String name, int age, String sex, double height, double weight) {
+        dataAccess.UserProfile.database.getInstance().insertUserProfile(name, age, sex, height, weight);
     }
 
-    public static profile getUserProfile(int id) {
-        return profileData.getProfile(id);
+    public static ArrayList<String> listProfiles() {
+        return dataAccess.UserProfile.database.getInstance().listProfiles();
     }
 
-    public static void updateProfileName(int id, String name){
-        profile profile = profileData.getProfile(id);
-        profile.name=name;
-        profileData.updateProfile(profile);
+    public static void deleteUserProfile(String username) {
+        dataAccess.UserProfile.database.getInstance().deleteUserProfile(username);
     }
 
-    public static void updateProfileAge(int id, int age){
-        profile profile = profileData.getProfile(id);
-        profile.age=age;
-        profileData.updateProfile(profile);
-    }
-    public static void updateProfileSex(int id, boolean sex){
-        profile profile = profileData.getProfile(id);
-        profile.sex=sex;
-        profileData.updateProfile(profile);
-    }
-    public static void updateProfileHeight(int id, double height){
-        profile profile = profileData.getProfile(id);
-        profile.height=height;
-        profileData.updateProfile(profile);
-    }
-    public static void updateProfileWeight(int id,double weight){
-        profile profile = profileData.getProfile(id);
-        profile.weight=weight;
-        profileData.updateProfile(profile);
+    public static ArrayList<String> getUserProfile(String username) {
+        return dataAccess.UserProfile.database.getInstance().getUserProfile(username);
     }
 
-    public static void deleteProfile(int id){
-        profileData.deleteProfile(id);
+    public static void setAge(String username, int newAge) {
+        dataAccess.UserProfile.database.getInstance().setAge(username, newAge);
+    }
+
+    public static void setSex(String username, String text) {
+        dataAccess.UserProfile.database.getInstance().setSex(username, text);
+    }
+
+    public static void setHeight(String username, double height) {
+        dataAccess.UserProfile.database.getInstance().setHeight(username, height);
+
+    }
+
+    public static void setWeight(String username, double weight) {
+        dataAccess.UserProfile.database.getInstance().setWeight(username, weight);
     }
 }
