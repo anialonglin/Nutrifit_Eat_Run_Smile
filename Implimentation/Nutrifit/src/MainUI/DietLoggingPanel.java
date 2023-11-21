@@ -48,6 +48,17 @@ public class DietLoggingPanel extends JPanel {
                 logDietEntry();
             }
         });
+
+        // Add a button to reload the database
+        JButton reloadDatabaseButton = new JButton("Reload Database");
+        reloadDatabaseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Add code to reload the database here
+                reloadDatabase();
+            }
+        });
+        addComponent(reloadDatabaseButton, 5, 1, 1, 1, constraints);
     }
 
     private void addComponent(Component component, int row, int column, GridBagConstraints constraints) {
@@ -80,6 +91,12 @@ public class DietLoggingPanel extends JPanel {
         clearFields();
     }
 
+    private void reloadDatabase() {
+        // Add code to reload the database
+        // This can include fetching updated data, refreshing UI, etc.
+        JOptionPane.showMessageDialog(this, "Database Reloaded!");
+    }
+
     private void clearFields() {
         dateField.setText("");
         mealTypeComboBox.setSelectedIndex(0);
@@ -87,4 +104,3 @@ public class DietLoggingPanel extends JPanel {
         quantityField.setText("");
     }
 }
-
