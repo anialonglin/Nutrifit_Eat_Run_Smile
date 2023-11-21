@@ -3,9 +3,19 @@ package dataAccess.nutritionData;
 import com.opencsv.*;
 
 import java.sql.*;
+import java.util.HashMap;
 
 public class database {
-    public static void main(String[] args) {
+
+    private static database instance = null;
+    public static database getInstance() {
+        if (instance == null) {
+            instance = new database();
+        }
+        return instance;
+    }
+
+    public static void loadDatabase(){
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
         wipeDB(url);
         createDatabase(url);
@@ -203,30 +213,30 @@ public class database {
                     }
                     statement.executeBatch();
                     System.out.println(4);
-                    reader = new CSVReader(new java.io.FileReader(conversionFactorsCSV));
-                    line = reader.readNext(); //get header out of the way
-                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
-                        sql.setLength(0);
-                        sql.append("INSERT INTO conversionFactors VALUES(").append(line[0]).append(",");
-                        if (!line[1].isEmpty()) {
-                            sql.append(line[1]).append(",");
-                        } else {
-                            sql.append("NULL,");
-                        }
-                        if (!line[2].isEmpty()) {
-                            sql.append(line[2]).append(",");
-                        } else {
-                            sql.append("NULL,");
-                        }
-                        if (!line[3].isEmpty()) {
-                            scratch = line[3].replace("'", "''");
-                            sql.append("'").append(scratch).append("');");
-                        } else {
-                            sql.append("NULL);");
-                        }
-                        statement.addBatch(sql.toString());
-                    }
-                    statement.executeBatch();
+//                    reader = new CSVReader(new java.io.FileReader(conversionFactorsCSV));
+//                    line = reader.readNext(); //get header out of the way
+//                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
+//                        sql.setLength(0);
+//                        sql.append("INSERT INTO conversionFactors VALUES(").append(line[0]).append(",");
+//                        if (!line[1].isEmpty()) {
+//                            sql.append(line[1]).append(",");
+//                        } else {
+//                            sql.append("NULL,");
+//                        }
+//                        if (!line[2].isEmpty()) {
+//                            sql.append(line[2]).append(",");
+//                        } else {
+//                            sql.append("NULL,");
+//                        }
+//                        if (!line[3].isEmpty()) {
+//                            scratch = line[3].replace("'", "''");
+//                            sql.append("'").append(scratch).append("');");
+//                        } else {
+//                            sql.append("NULL);");
+//                        }
+//                        statement.addBatch(sql.toString());
+//                    }
+//                    statement.executeBatch();
                     System.out.println(5);
                     reader = new CSVReader(new java.io.FileReader(nutrientNameCSV));
                     line = reader.readNext(); //get header out of the way
@@ -455,4 +465,23 @@ public class database {
             System.out.println(e.getMessage());
         }
     }
+
+    public static HashMap listFoods(){
+HashMap<String, String> foodList = new HashMap<>();
+        String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
+        try (Connection conn = DriverManager.getConnection(url)) {
+            if (conn != null) {
+                DatabaseMetaData meta = conn.getMetaData();
+                Statement statement = conn.createStatement();
+                ResultSet rs = statement.executeQuery("SELECT FoodID, FoodDescription FROM foodName;");
+                while (rs.next()) {
+                    foodList.put(rs.getString("FoodID"), rs.getString("FoodDescription"));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return foodList;
+    }
 }
+
