@@ -1,9 +1,14 @@
 package MainUI;
 
+import application.nutritionDataManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class DietLoggingPanel extends JPanel {
     private JTextField dateField;
@@ -11,6 +16,7 @@ public class DietLoggingPanel extends JPanel {
     private JTextField foodItemField;
     private JTextField quantityField;
     private JButton logDietButton;
+    private JList<String> foodItemSuggestions;
 
     public DietLoggingPanel() {
         setLayout(new GridBagLayout()); // Use GridBagLayout for more control
@@ -32,13 +38,19 @@ public class DietLoggingPanel extends JPanel {
         foodItemField = new JTextField(15); // Set the column width
         addComponent(foodItemField, 2, 1, constraints);
 
-        addComponent(new JLabel("Quantity:"), 3, 0, constraints);
+        // Suggestions for matching food items
+        foodItemSuggestions = new JList<>();
+        JScrollPane suggestionsScrollPane = new JScrollPane(foodItemSuggestions);
+        suggestionsScrollPane.setPreferredSize(new Dimension(150, 70));
+        addComponent(suggestionsScrollPane, 3, 1, constraints);
+
+        addComponent(new JLabel("Quantity:"), 4, 0, constraints);
         quantityField = new JTextField(15); // Set the column width
-        addComponent(quantityField, 3, 1, constraints);
+        addComponent(quantityField, 4, 1, constraints);
 
         // Add a button to log the diet
         logDietButton = new JButton("Log Diet");
-        addComponent(logDietButton, 4, 0, 2, 1, constraints);
+        addComponent(logDietButton, 5, 0, 2, 1, constraints);
 
         // Add an action listener to the log diet button
         logDietButton.addActionListener(new ActionListener() {
@@ -58,20 +70,19 @@ public class DietLoggingPanel extends JPanel {
                 reloadDatabase();
             }
         });
-        addComponent(reloadDatabaseButton, 5, 1, 1, 1, constraints);
+        addComponent(reloadDatabaseButton, 6, 1, 1, 1, constraints);
+
+        // Add a key listener to the food item field for suggestions
+        foodItemField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                suggestFoodItems();
+            }
+        });
     }
 
     private void addComponent(Component component, int row, int column, GridBagConstraints constraints) {
         constraints.gridx = column;
         constraints.gridy = row;
-        add(component, constraints);
-    }
-
-    private void addComponent(Component component, int row, int column, int width, int height, GridBagConstraints constraints) {
-        constraints.gridx = column;
-        constraints.gridy = row;
-        constraints.gridwidth = width;
-        constraints.gridheight = height;
         add(component, constraints);
     }
 
@@ -103,4 +114,34 @@ public class DietLoggingPanel extends JPanel {
         foodItemField.setText("");
         quantityField.setText("");
     }
+
+    private void suggestFoodItems() {
+        String input = foodItemField.getText().toLowerCase();
+        List<String> suggestions = getMatchingFoodItems(input);
+
+        DefaultListModel<String> model = new DefaultListModel<>();
+        for (String suggestion : suggestions) {
+            model.addElement(suggestion);
+        }
+
+        foodItemSuggestions.setModel(model);
+    }
+
+    private List<String> getMatchingFoodItems(String query) {
+        List<String> matchingFoodItems = new ArrayList<>();
+
+        // Retrieve the raw HashMap from nutritionDataManager
+        HashMap rawFoodItems = nutritionDataManager.listFoods();
+
+        // Iterate over the rawFoodItems and add matching items to the list
+        for (Object key : rawFoodItems.keySet()) {
+            String foodItem = (String) key;
+            if (foodItem.toLowerCase().contains(query.toLowerCase())) {
+                matchingFoodItems.add(foodItem);
+            }
+        }
+
+        return matchingFoodItems;
+    }
+
 }
