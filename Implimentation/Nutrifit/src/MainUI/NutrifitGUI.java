@@ -75,30 +75,6 @@ public class NutrifitGUI {
         profileFrame.setVisible(true);
     }
 
-//    private static void showLoginScreen() {
-//        // Create and display the Login Screen
-//        JFrame loginFrame = new JFrame("Login Screen");
-//        loginFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//        loginFrame.setSize(700, 600);
-//
-//        // Create an instance of the Login Screen
-//        LoginScreen loginScreen = new LoginScreen();
-//
-//        // Add the LoginScreen to the LoginScreenFrame
-//        loginFrame.add(loginScreen);
-//
-//        // Add a property change listener to listen for a successful login
-//        loginScreen.addPropertyChangeListener("loginSuccess", evt -> {
-//            // If login is successful, close the login frame
-//            loginFrame.dispose();
-//
-//            // Show the User Main UI Screen with the user profile
-//            showUserMainUIScreen((profile) evt.getNewValue());
-//        });
-//
-//        loginFrame.setVisible(true);
-//    }
-
 
 
     private static void showLoginScreen(int testProfileId) {

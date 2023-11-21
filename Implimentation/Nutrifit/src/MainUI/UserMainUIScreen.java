@@ -34,7 +34,7 @@ public class UserMainUIScreen {
         JButton logDietButton = new JButton("Log Diet");
         JButton logExerciseButton = new JButton("Log Exercise");
         JButton DietAlignmentButton = new JButton("Diet Alignment CFG ");
-        JButton WeightLossProjectionButton = new JButton("View Weight Loss Projection");
+        JButton WeightLossProjectionButton = new JButton("Weight Loss Calculator");
         JButton CalorieExerciseChartButton = new JButton("Calorie&Exercise Chart");
         JButton nutrientIntakeChartButton = new JButton("Nutrient Intake Chart");
         JButton editProfileButton = new JButton("Edit Profile");
