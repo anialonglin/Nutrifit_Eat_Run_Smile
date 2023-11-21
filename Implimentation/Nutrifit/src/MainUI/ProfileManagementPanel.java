@@ -22,7 +22,7 @@ public class ProfileManagementPanel extends JPanel {
         constraints.insets = new Insets(5, 5, 5, 5); // Adjust spacing
 
         // Add labels and input fields for profile information
-        addComponent(new JLabel("Name:"), 0, 0, constraints);
+        addComponent(new JLabel("User Name:"), 0, 0, constraints);
         nameField = new JTextField(15); // Set the column width (adjust as needed)
         addComponent(nameField, 0, 1, constraints);
 
