@@ -1,14 +1,10 @@
 package application;
 
 
-import java.util.Date;
-import dataAccess.UserProfile.Database;
+import dataAccess.UserProfile.database;
+
 public class mealManager {
-   public static void addProfile( String name, int age, String sex, double height_cm, double weight_kg){
-       
-       Database.getInstance().insertUserProfile(name,age,sex,height_cm,weight_kg);
-   }
-//
-//    public static int addMeal(int profileId, String meal1, Date date) {
-//    }
+    public static void addMeal(String username, String date, String mealType, String foodItem, int quantity) {
+        database.getInstance().insertDietLog(username, date, mealType, foodItem, quantity);
+    }
 }

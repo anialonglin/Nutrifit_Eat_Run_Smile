@@ -1,19 +1,17 @@
 package application;
 
-import dataAccess.HC_Old_user_data.exercise;
-import dataAccess.HC_Old_user_data.exerciseData;
+import java.util.ArrayList;
 
 public class exerciseManager {
-    public static int addExercise(int profileId, String name, int duration,int intensity){
-        exercise exercise = new exercise(profileId, name, duration, intensity);
-        return exerciseData.addExercise(exercise);
+    public static int addExercise(String username, String date, String exerciseType, int duration, int intensity) {
+        return dataAccess.UserProfile.database.getInstance().insertExerciseLog(username, date, exerciseType, duration, intensity);
     }
 
-    public static void deleteExercise(int exerciseId){
-        exerciseData.deleteExercise(exerciseId);
+    public static ArrayList<String> getExercise(String username, int exerciseId) {
+        return dataAccess.UserProfile.database.getInstance().getExercise(username, exerciseId);
     }
 
-    public static exercise getExercise(int exerciseId){
-        return exerciseData.getExercise(exerciseId);
+    public static void deleteExercise(String username, int exerciseId) {
+        dataAccess.UserProfile.database.getInstance().deleteExercise(username, exerciseId);
     }
 }

@@ -8,8 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 public class BMICalculation {
     @Test
-    public void BMICalc() {
-        int profileId = userManager.createUserProfile("John", 35, true, 180, 180);
-        assertEquals(BMICalc.getBMI(profileId),((double)180/(double)180/(double)180)*(double)10000,0.1);
+    public void BMICalc(String username) {
+        assertEquals(BMICalc.getBMI(username),((double)180/(double)180/(double)180)*(double)10000,0.1);
     }
 }

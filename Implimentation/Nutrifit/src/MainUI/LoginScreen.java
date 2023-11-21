@@ -1,19 +1,17 @@
 package MainUI;
 
 import application.userManager;
-import dataAccess.HC_Old_user_data.profile;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class LoginScreen extends JPanel {
-    private JTextField usernameField;
-    private int testProfileId;
+    public JTextField usernameField;
 
-    public LoginScreen(int testProfileId) {
-        this.testProfileId = testProfileId;
+    public LoginScreen() {
 
         // Create components
         JLabel usernameLabel = new JLabel("Username:");
@@ -49,6 +47,11 @@ public class LoginScreen extends JPanel {
                 if (isValidUsername(usernameField.getText())) {
                     // If valid, show a message
                     JOptionPane.showMessageDialog(LoginScreen.this, "Login Successful!");
+                    //return main screen logged in as user
+                    new UserMainUIScreen(usernameField.getText());
+
+                    // Close the LoginScreen
+                    SwingUtilities.getWindowAncestor(LoginScreen.this).dispose();
 
                 } else {
                     // If invalid, display an error message
@@ -59,19 +62,9 @@ public class LoginScreen extends JPanel {
     }
 
     private boolean isValidUsername(String username) {
-        // In a real-world scenario, this would involve checking against a database or other secure means
-        // For simplicity, we'll use a hardcoded test profile ID in this example
-        if (username.equals("Alex")) {
-            // If the provided username matches the test profile, get the user profile
-            profile user = userManager.getUserProfile(testProfileId);
-
-            // Fire the loginSuccess event and pass the user profile as a property
-            firePropertyChange("loginSuccess", null, user);
-
-            return true;
-        } else {
-            // If the provided username does not match, return false
-            return false;
-        }
+        // Check if the username is valid
+        ArrayList<String> users = userManager.listProfiles();
+        return users.contains(username);
     }
 }
+

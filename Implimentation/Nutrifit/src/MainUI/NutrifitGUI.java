@@ -1,8 +1,5 @@
 package MainUI;
 
-import application.userManager;
-import dataAccess.HC_Old_user_data.profile;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,9 +8,6 @@ import java.awt.event.ActionListener;
 public class NutrifitGUI {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-
-            // Create a test profile
-            int testProfileId = userManager.createUserProfile("Alex", 23, true, 180.0, 70.0);
 
             UIManager.put("Label.font", new Font("Arial", Font.PLAIN, 12)); // Set a default font for labels
             UIManager.put("Button.font", new Font("Arial", Font.PLAIN, 12)); // Set a default font for buttons
@@ -51,16 +45,15 @@ public class NutrifitGUI {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // Display the Login Screen
-                    showLoginScreen(testProfileId);
+                    showLoginScreen();
+
                 }
             });
-
         });
-
     }
 
     // Function to display the Profile Management panel
-    private static void showProfileManagementPanel() {
+    public static void showProfileManagementPanel() {
         // Create and display the Profile Management panel
         JFrame profileFrame = new JFrame("Profile Management");
         profileFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -76,36 +69,19 @@ public class NutrifitGUI {
     }
 
 
-
-    private static void showLoginScreen(int testProfileId) {
+    private static void showLoginScreen() {
         // Create and display the Login Screen
         JFrame loginFrame = new JFrame("Login Screen");
         loginFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         loginFrame.setSize(700, 600);
 
         // Create an instance of the Login Screen with the test profile ID
-        LoginScreen loginScreen = new LoginScreen(testProfileId);
+        LoginScreen loginScreen = new LoginScreen();
 
         // Add the LoginScreen to the LoginScreenFrame
         loginFrame.add(loginScreen);
 
-        // Add a property change listener to listen for a successful login
-        loginScreen.addPropertyChangeListener("loginSuccess", evt -> {
-            // If login is successful, close the login frame
-            loginFrame.dispose();
-
-            // Show the User Main UI Screen with the user profile
-            showUserMainUIScreen((profile) evt.getNewValue());
-        });
-
         loginFrame.setVisible(true);
+
     }
-
-
-    private static void showUserMainUIScreen(profile user) {
-        new UserMainUIScreen(user);
-    }
-
-
-
 }

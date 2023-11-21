@@ -1,19 +1,17 @@
 package MainUI;
 
-import dataAccess.HC_Old_user_data.profile;
+import application.userManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 
 public class ProfileManagementPanel extends JPanel {
-    private JTextField nameField;
-    private JTextField ageField;
-    private JTextField sexField;
-    private JTextField heightField;
-    private JTextField weightField;
-    private JButton saveProfileButton;
+    private final JTextField nameField;
+    private final JTextField ageField;
+    private final JTextField sexField;
+    private final JTextField heightField;
+    private final JTextField weightField;
+    private final JButton saveProfileButton;
 
     public ProfileManagementPanel() {
         setLayout(new GridBagLayout()); // Use GridBagLayout for more control
@@ -52,12 +50,12 @@ public class ProfileManagementPanel extends JPanel {
             // Retrieve profile information from input fields
             String name = nameField.getText();
             int age = Integer.parseInt(ageField.getText());
-            boolean sex = Boolean.parseBoolean(sexField.getText());
+            String sex = sexField.getText();
             int height = Integer.parseInt(heightField.getText());
             double weight = Double.parseDouble(weightField.getText());
 
             // Create a profile object and save it (Profile class)
-            profile newProfile = new profile(name, age, sex, height, weight);
+            userManager.createUserProfile(name, age, sex, height, weight);
             // Save or update the profile using database
 
             // Show a confirmation message
@@ -65,6 +63,8 @@ public class ProfileManagementPanel extends JPanel {
 
             // Clear the input fields after save the profile
             clearFields();
+            // Close the ProfileManagementPanel
+            SwingUtilities.getWindowAncestor(ProfileManagementPanel.this).dispose();
         });
     }
 
