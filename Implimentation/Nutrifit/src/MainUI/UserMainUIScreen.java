@@ -2,14 +2,12 @@ package MainUI;
 
 import application.DietAlignmentCalculator;
 import application.userManager;
-import dataAccess.userData.profile;
-import org.jfree.chart.ChartPanel;
+import dataAccess.HC_Old_user_data.profile;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
