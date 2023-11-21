@@ -291,45 +291,48 @@ public class database {
                     }
                     statement.executeBatch();
                     System.out.println(6);
-//                    reader = new CSVReader(new java.io.FileReader(nutrientAmountCSV));
-//                    line = reader.readNext(); //get header out of the way
-//                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
-//                        sql.setLength(0);
-//                        sql.append("INSERT INTO nutrientAmount VALUES(").append(line[0]).append(",");
-//                        if (!line[1].isEmpty()) {
-//                            sql.append(line[1]).append(",");
-//                        } else {
-//                            sql.append("NULL,");
-//                        }
-//                        if (!line[2].isEmpty()) {
-//                            sql.append(line[2]).append(",");
-//                        } else {
-//                            sql.append("NULL,");
-//                        }
-//                        if (!line[3].isEmpty()) {
-//                            sql.append(line[3]).append(",");
-//                        } else {
-//                            sql.append("NULL,");
-//                        }
-//                        if (!line[4].isEmpty()) {
-//                            sql.append(line[4]).append(",");
-//                        } else {
-//                            sql.append("NULL,");
-//                        }
-//                        if (!line[5].isEmpty()) {
-//                            sql.append(line[5]).append(",");
-//                        } else {
-//                            sql.append("NULL,");
-//                        }
+                    reader = new CSVReader(new java.io.FileReader(nutrientAmountCSV));
+                    line = reader.readNext(); //get header out of the way
+                    long time = System.currentTimeMillis();
+                    while ((line = reader.readNext()) != null && !line[0].isEmpty()) {
+                        sql.setLength(0);
+                        sql.append("INSERT INTO nutrientAmount VALUES(").append(line[0]).append(",");
+                        if (!line[1].isEmpty()) {
+                            sql.append(line[1]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[2].isEmpty()) {
+                            sql.append(line[2]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[3].isEmpty()) {
+                            sql.append(line[3]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[4].isEmpty()) {
+                            sql.append(line[4]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
+                        if (!line[5].isEmpty()) {
+                            sql.append(line[5]).append(",");
+                        } else {
+                            sql.append("NULL,");
+                        }
 //                        if (!line[6].isEmpty()) {
 //                            scratch = line[6].replace("'", "''");
 //                            sql.append(scratch).append(");");
 //                        } else {
-//                            sql.append("NULL);");
+                            sql.append("NULL);");
 //                        }
-//                        statement.addBatch(sql.toString());
-//                    }
-//                    statement.executeBatch();
+                        statement.execute(sql.toString());
+                        if(time + 15000 < System.currentTimeMillis()){
+                           break;
+                        }
+                    }
                     System.out.println(7);
                     reader = new CSVReader(new java.io.FileReader(nutrientSourceCSV));
                     line = reader.readNext(); //get header out of the way
@@ -446,6 +449,24 @@ HashMap<String, String> foodList = new HashMap<>();
             System.out.println(e.getMessage());
         }
         return foodList;
+    }
+
+    public HashMap itemNutrition(int id) {
+        HashMap<String, String> nutritionList = new HashMap<>();
+        String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
+        try (Connection conn = DriverManager.getConnection(url)) {
+            if (conn != null) {
+                DatabaseMetaData meta = conn.getMetaData();
+                Statement statement = conn.createStatement();
+                ResultSet rs = statement.executeQuery("SELECT NutrientName, NutrientValue FROM nutrientName JOIN nutrientAmount ON nutrientName.NutrientID = nutrientAmount.NutrientID WHERE FoodID = " + id + ";");
+                while (rs.next()) {
+                    nutritionList.put(rs.getString("NutrientName"), rs.getString("NutrientValue"));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return nutritionList;
     }
 }
 
