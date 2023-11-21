@@ -10,4 +10,9 @@ public class nutritionDataManager {
     public static void reloadDatabase(){
         database.getInstance().loadDatabase();
     }
+
+    public static void itemNutrition(int id){
+        
+    }
+
 }
