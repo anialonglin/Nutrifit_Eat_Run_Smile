@@ -1,20 +1,18 @@
 package application;
 
-import dataAccess.userData.meal;
-import dataAccess.userData.mealData;
+
 import java.util.Date;
-
+import dataAccess.UserProfile.Database;
 public class mealManager {
-    public static int addMeal(int ProfileId, String item, Date date){
-        meal meal = new meal(ProfileId, date,item);
-        return mealData.addMeal(meal);
-    }
-    public static void deleteMeal(int mealId){
-        mealData.deleteMeal(mealId);
-    }
+   public static void addProfile( String name,
+                                  int age,
+                                  String sex,
+                                  double height_cm,
+                                  double weight_kg){
+       
+       Database.getInstance().insertUserProfile(name,age,sex,height_cm,weight_kg);
+   }
 
-    public static meal getMeal(int mealId){
-        return mealData.getMeal(mealId);
+    public static int addMeal(int profileId, String meal1, Date date) {
     }
-
 }

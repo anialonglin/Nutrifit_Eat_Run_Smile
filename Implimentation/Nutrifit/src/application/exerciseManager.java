@@ -1,7 +1,7 @@
 package application;
 
-import dataAccess.userData.exercise;
-import dataAccess.userData.exerciseData;
+import dataAccess.HC_Old_user_data.exercise;
+import dataAccess.HC_Old_user_data.exerciseData;
 
 public class exerciseManager {
     public static int addExercise(int profileId, String name, int duration,int intensity){

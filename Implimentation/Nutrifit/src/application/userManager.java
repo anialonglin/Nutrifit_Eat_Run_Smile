@@ -1,7 +1,7 @@
 package application;
 
-import dataAccess.userData.profile;
-import dataAccess.userData.profileData;
+import dataAccess.HC_Old_user_data.profile;
+import dataAccess.HC_Old_user_data.profileData;
 
 public class userManager {
     public static int createUserProfile(String name, int age, boolean sex, double height, double weight) {
