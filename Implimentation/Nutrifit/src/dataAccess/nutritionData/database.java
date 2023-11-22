@@ -3,6 +3,7 @@ package dataAccess.nutritionData;
 import com.opencsv.CSVReader;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class database {
@@ -16,7 +17,7 @@ public class database {
         return instance;
     }
 
-    public static void loadDatabase() {
+    public void loadDatabase() {
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
         wipeDB(url);
         createDatabase(url);
@@ -473,6 +474,30 @@ public class database {
             System.out.println(e.getMessage());
         }
         return nutritionList;
+    }
+
+    public ArrayList<String> findFoodItem(String[] queryParams) {
+        ArrayList<String> foodList = new ArrayList<>();
+        String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
+        try (Connection conn = DriverManager.getConnection(url)) {
+            if (conn != null) {
+                DatabaseMetaData meta = conn.getMetaData();
+                Statement statement = conn.createStatement();
+                StringBuilder sql = new StringBuilder();
+                sql.append("SELECT FoodID, FoodDescription FROM foodName WHERE FoodDescription LIKE '%");
+                for (String query : queryParams) {
+                    sql.append(query).append("%");
+                }
+                sql.append("%';");
+                ResultSet rs = statement.executeQuery(sql.toString());
+                while (rs.next()) {
+                    foodList.add(rs.getString("FoodID") + " " + rs.getString("FoodDescription"));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return foodList;
     }
 }
 

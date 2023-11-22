@@ -1,5 +1,7 @@
 package MainUI;
 
+import application.foodManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,6 +13,7 @@ public class DietLoggingPanel extends JPanel {
     private final JTextField foodItemField;
     private final JTextField quantityField;
     private final JButton logDietButton;
+    private final JComboBox<String> foodItemDropdown;
 
     public DietLoggingPanel(String username) {
         setLayout(new GridBagLayout()); // Use GridBagLayout for more control
@@ -32,13 +35,16 @@ public class DietLoggingPanel extends JPanel {
         foodItemField = new JTextField(15); // Set the column width
         addComponent(foodItemField, 2, 1, constraints);
 
-        addComponent(new JLabel("Quantity:"), 3, 0, constraints);
+        foodItemDropdown = new JComboBox<>(); // Set the column width
+        addComponent(foodItemField, 3, 1, constraints);
+
+        addComponent(new JLabel("Quantity:"), 4, 0, constraints);
         quantityField = new JTextField(15); // Set the column width
-        addComponent(quantityField, 3, 1, constraints);
+        addComponent(quantityField, 5, 1, constraints);
 
         // Add a button to log the diet
         logDietButton = new JButton("Log Diet");
-        addComponent(logDietButton, 4, 0, 2, 1, constraints);
+        addComponent(logDietButton, 6, 0, 2, 1, constraints);
 
         // Add an action listener to the log diet button
         logDietButton.addActionListener(new ActionListener() {
@@ -46,6 +52,20 @@ public class DietLoggingPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 // Add code to log the diet entry here
                 logDietEntry(username);
+            }
+        });
+
+        //add lister to foodItemField to update dropdown
+        foodItemField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Add code to log the diet entry here
+                foodManager.queryFoodItem(foodItemField.getText());
+                //Add the list of food items to the dropdown
+                foodItemDropdown.removeAllItems();
+                for (String foodItem : foodManager.queryFoodItem(foodItemField.getText())) {
+                    foodItemDropdown.addItem(foodItem);
+                }
             }
         });
     }
@@ -72,7 +92,7 @@ public class DietLoggingPanel extends JPanel {
         int quantity = Integer.parseInt(quantityField.getText());
 
         // Add code to save the diet entry to your data storage (e.g., database)
-        application.mealManager.addMeal(username, date, mealType, foodItem, quantity);
+        foodManager.addMeal(username, date, mealType, foodItem, quantity);
         // Show a confirmation message
         JOptionPane.showMessageDialog(this, "Diet entry logged successfully!");
 
@@ -82,6 +102,7 @@ public class DietLoggingPanel extends JPanel {
 
     private void reloadDatabase() {
         // Add code to reload the database;
+        foodManager.reloadDatabase();
         // This can include fetching updated data, refreshing UI, etc.
         JOptionPane.showMessageDialog(this, "database Reloaded!");
     }

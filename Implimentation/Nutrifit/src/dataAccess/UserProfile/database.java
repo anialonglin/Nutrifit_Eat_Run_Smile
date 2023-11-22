@@ -133,35 +133,6 @@ public class database {
         }
     }
 
-    public void selectAllUserProfiles() {
-        // Select all user profiles from the UserProfile table
-        String sql = "SELECT id, name, age, sex, height_cm, weight_kg FROM UserProfile";
-
-        try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
-
-            // Loop through the result set
-            while (rs.next()) {
-                System.out.println(rs.getInt("id") + "\t" + rs.getString("name") + "\t" + rs.getInt("age") + "\t" + rs.getString("sex") + "\t" + rs.getDouble("height_cm") + "\t" + rs.getDouble("weight_kg"));
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void selectAllDietLogs() {
-        // Select all diet logs from the DietLog table
-        String sql = "SELECT ID, username, Date, Meal_Type, Food_item, Quantity FROM DietLog";
-
-        try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
-
-            // Loop through the result set
-            while (rs.next()) {
-                System.out.println(rs.getInt("ID") + "\t" + rs.getString("username") + "\t" + rs.getString("Date") + "\t" + rs.getString("Meal_Type") + "\t" + rs.getString("Food_item") + "\t" + rs.getInt("Quantity"));
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
 
     public ArrayList<String> listProfiles() {
         // List all user profiles
@@ -296,4 +267,6 @@ public class database {
             System.out.println(e.getMessage());
         }
     }
+
+
 }
