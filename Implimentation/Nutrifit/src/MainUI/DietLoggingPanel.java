@@ -36,11 +36,11 @@ public class DietLoggingPanel extends JPanel {
         addComponent(foodItemField, 2, 1, constraints);
 
         foodItemDropdown = new JComboBox<>(); // Set the column width
-        addComponent(foodItemField, 3, 1, constraints);
+        addComponent(foodItemDropdown, 3, 1, constraints);
 
         addComponent(new JLabel("Quantity:"), 4, 0, constraints);
         quantityField = new JTextField(15); // Set the column width
-        addComponent(quantityField, 5, 1, constraints);
+        addComponent(quantityField, 4, 1, constraints);
 
         // Add a button to log the diet
         logDietButton = new JButton("Log Diet");
