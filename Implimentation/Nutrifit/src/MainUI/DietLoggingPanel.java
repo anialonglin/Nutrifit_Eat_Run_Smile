@@ -46,12 +46,15 @@ public class DietLoggingPanel extends JPanel {
         logDietButton = new JButton("Log Diet");
         addComponent(logDietButton, 6, 0, 2, 1, constraints);
 
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(foodItemField);
+        frame.pack();
         // Add an action listener to the log diet button
         logDietButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Add code to log the diet entry here
                 logDietEntry(username);
+                foodItemDropdown.removeAllItems();
             }
         });
 
@@ -66,6 +69,8 @@ public class DietLoggingPanel extends JPanel {
                 for (String foodItem : foodManager.queryFoodItem(foodItemField.getText())) {
                     foodItemDropdown.addItem(foodItem);
                 }
+                //resize window to fit dropdown
+                frame.pack();
             }
         });
     }
@@ -88,7 +93,7 @@ public class DietLoggingPanel extends JPanel {
         // Retrieve diet entry information from input fields
         String date = dateField.getText();
         String mealType = (String) mealTypeComboBox.getSelectedItem();
-        String foodItem = foodItemField.getText();
+        String foodItem = foodItemDropdown.getSelectedItem().toString();
         int quantity = Integer.parseInt(quantityField.getText());
 
         // Add code to save the diet entry to your data storage (e.g., database)

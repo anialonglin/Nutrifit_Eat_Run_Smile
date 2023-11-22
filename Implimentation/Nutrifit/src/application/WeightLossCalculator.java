@@ -5,7 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class WeightLossCalculator {
-    public double calculateWeightLoss(double calorieIntake, double exerciseBurn, Date futureDate) {
+
+    public static double calculateWeightLoss(String username, Date futureDate) {
+        return calculateWeightLoss(foodManager.avgCalories(username), exerciseManager.avgExercise(username), futureDate);
+    }
+    public static double calculateWeightLoss(double calorieIntake, double exerciseBurn, Date futureDate) {
         // Calculate the net calorie deficit
         double netCalorieDeficit = calorieIntake - exerciseBurn;
 
@@ -19,7 +23,9 @@ public class WeightLossCalculator {
         return weightLoss * daysUntilFutureDate;
     }
 
-    private long daysBetween(Date startDate, Date endDate) {
+
+
+    private static long daysBetween(Date startDate, Date endDate) {
         long diff = endDate.getTime() - startDate.getTime();
         return diff / (24 * 60 * 60 * 1000);
     }

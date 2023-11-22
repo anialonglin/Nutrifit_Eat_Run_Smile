@@ -17,7 +17,7 @@ public class database {
 
     public static void main(String[] args) {
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/UserProfile/User.db";
-//        wipeDB(url);
+       //wipeDB(url);
         createDatabase(url);
         initializeDatabase(url);
     }
@@ -30,7 +30,7 @@ public class database {
                 // Create UserProfile table
                 statement.execute("CREATE TABLE IF NOT EXISTS UserProfile (username TEXT, age INTEGER, sex TEXT, height_cm FLOAT, weight_kg FLOAT, PRIMARY KEY (username));");
                 // Create DietLog table
-                statement.execute("CREATE TABLE IF NOT EXISTS DietLog (ID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, Date TEXT, Meal_Type TEXT, Food_item TEXT, Quantity INTEGER, FOREIGN KEY (username) REFERENCES UserProfile(username));");
+                statement.execute("CREATE TABLE IF NOT EXISTS DietLog (ID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, Date TEXT, Meal_Type TEXT, Food_item TEXT, FoodID INTEGER, Quantity INTEGER, FOREIGN KEY (username) REFERENCES UserProfile(username));");
                 // Create ExerciseLog table
                 statement.execute("CREATE TABLE IF NOT EXISTS ExerciseLog (ID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, Date TEXT, Exercise_Type TEXT, Duration INTEGER, Intensity INTEGER, FOREIGN KEY (username) REFERENCES UserProfile(username));");
                 System.out.println("User database initialized. Driver:" + meta.getDriverName());
@@ -98,16 +98,17 @@ public class database {
         }
     }
 
-    public void insertDietLog(String username, String date, String mealType, String foodItem, int quantity) {
+    public void insertDietLog(String username, String date, String mealType, String foodItem, int foodID , int quantity) {
         // Insert a new diet log into the DietLog table
-        String sql = "INSERT INTO DietLog(username, Date, Meal_Type, Food_item, Quantity) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO DietLog(username, Date, Meal_Type, Food_item, FoodID, Quantity) VALUES(?,?,?,?,?,?)";
 
         try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, username);
             pstmt.setString(2, date);
             pstmt.setString(3, mealType);
             pstmt.setString(4, foodItem);
-            pstmt.setInt(5, quantity);
+            pstmt.setInt(5, foodID);
+            pstmt.setInt(6, quantity);
             pstmt.executeUpdate();
             System.out.println("A new diet log has been inserted.");
         } catch (SQLException e) {
@@ -268,5 +269,21 @@ public class database {
         }
     }
 
-
+    public ArrayList<Integer> getFoodIDs(String username) {
+        ArrayList<Integer> foodIDs = new ArrayList<>();
+        String sql = "SELECT FoodID, Quantity FROM DietLog WHERE username is ?";
+        try (Connection conn = this.connect()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                for(int i = 0; i < rs.getInt("Quantity"); i++) {
+                    foodIDs.add(rs.getInt("FoodID"));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return foodIDs;
+    }
 }
