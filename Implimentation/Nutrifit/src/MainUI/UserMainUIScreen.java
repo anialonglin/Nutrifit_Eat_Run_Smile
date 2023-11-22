@@ -63,14 +63,14 @@ public class UserMainUIScreen {
             public void actionPerformed(ActionEvent e) {
                 // Display the ExerciseLoggingPanel
 //                profile user = userManager.getUserProfile(testProfileId);
-                showExerciseLoggingPanel();
+                showExerciseLoggingPanel(username);
             }
         });
 
         WeightLossProjectionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                showWeightLossProjectionPanel();
+                showWeightLossProjectionPanel(username);
             }
         });
 
@@ -82,7 +82,7 @@ public class UserMainUIScreen {
                 Map<String, Double> cfgRecommendations = dietAlignmentCalculator.getCfgRecommendations();
 
                 // Display the DietAlignmentPanel with comparison chart
-                showDietAlignmentPanel(averagePlate, cfgRecommendations);
+                showDietAlignmentPanel(username);
             }
         });
 
@@ -145,14 +145,14 @@ public class UserMainUIScreen {
         dietLoggingFrame.setVisible(true);
     }
 
-    private void showExerciseLoggingPanel() {
+    private void showExerciseLoggingPanel(String username) {
         // Create and display the ExerciseLoggingPanel
         JFrame exerciseLoggingFrame = new JFrame("Exercise Logging Management");
         exerciseLoggingFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         exerciseLoggingFrame.setSize(700, 600);
 
         // Create an instance of the ExerciseLoggingPanel
-        ExerciseLoggingPanel exerciseLoggingPanel = new ExerciseLoggingPanel();
+        ExerciseLoggingPanel exerciseLoggingPanel = new ExerciseLoggingPanel(username);
 
         // Add the ExerciseLoggingPanel to the ExerciseLoggingFrame
         exerciseLoggingFrame.add(exerciseLoggingPanel);
@@ -196,24 +196,24 @@ public class UserMainUIScreen {
         nutrientIntakeChartFrame.setVisible(true);
     }
 
-    private void showWeightLossProjectionPanel() {
+    private void showWeightLossProjectionPanel(String username) {
         JFrame weightLossProjectionFrame = new JFrame("Weight Loss Projection");
         weightLossProjectionFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         weightLossProjectionFrame.setSize(400, 300);
 
         // Create an instance of the WeightLossProjectionPanel
-        WeightLossProjectionPanel weightLossProjectionPanel = new WeightLossProjectionPanel();
+        WeightLossProjectionPanel weightLossProjectionPanel = new WeightLossProjectionPanel(username);
         weightLossProjectionFrame.add(weightLossProjectionPanel);
 
         weightLossProjectionFrame.setVisible(true);
     }
 
-    private void showDietAlignmentPanel(Map<String, Double> averagePlate, Map<String, Double> cfgRecommendations) {
+    private void showDietAlignmentPanel(String username) {
         JFrame dietAlignmentFrame = new JFrame("Diet Alignment Panel");
         dietAlignmentFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         dietAlignmentFrame.setSize(1000, 800);
 
-        DietAlignmentPanel dietAlignmentPanel = new DietAlignmentPanel(averagePlate, cfgRecommendations);
+        DietAlignmentPanel dietAlignmentPanel = new DietAlignmentPanel(username);
 
         dietAlignmentFrame.add(dietAlignmentPanel);
         dietAlignmentFrame.setVisible(true);

@@ -51,7 +51,7 @@ public class ProfileManagementPanel extends JPanel {
             String name = nameField.getText();
             int age = Integer.parseInt(ageField.getText());
             String sex = sexField.getText();
-            int height = Integer.parseInt(heightField.getText());
+            Double height = Double.parseDouble(heightField.getText());
             double weight = Double.parseDouble(weightField.getText());
 
             // Create a profile object and save it (Profile class)

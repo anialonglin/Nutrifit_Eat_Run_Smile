@@ -10,35 +10,35 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class WeightLossProjectionPanel extends JPanel {
-    private JTextField calorieIntakeField;
-    private JTextField exerciseBurnField;
+    private JLabel calorieIntakeField;
+    private JLabel exerciseBurnField;
     private JTextField futureDateField;
     private JButton calculateButton;
     private JLabel resultLabel;
 
     private WeightLossCalculator weightLossCalculator;
 
-    public WeightLossProjectionPanel() {
+    public WeightLossProjectionPanel(String username) {
         weightLossCalculator = new WeightLossCalculator();
 
         // Set layout manager
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // Create components
-        calorieIntakeField = new JTextField(10);
-        exerciseBurnField = new JTextField(10);
+        calorieIntakeField = new JLabel(application.foodManager.avgCalories(username));
+        exerciseBurnField = new JLabel();
         futureDateField = new JTextField(10);
-        calculateButton = new JButton("Calculate Weight Loss");
+        calculateButton = new JButton("calculate");
         resultLabel = new JLabel();
 
         // Add components to the panel
-        add(new JLabel("Calories Intake:"));
+        add(new JLabel("Average daily Calories Intake:"));
         add(calorieIntakeField);
 
-        add(new JLabel("Calories Burned through Exercise:"));
+        add(new JLabel("Average Calories Burned through Exercise:"));
         add(exerciseBurnField);
 
-        add(new JLabel("Select a Date in the Future (yyyy-MM-dd):"));
+        add(new JLabel("Select a Date in the Future (mm-dd-yyyy):"));
         add(futureDateField);
 
         add(calculateButton);
@@ -48,24 +48,22 @@ public class WeightLossProjectionPanel extends JPanel {
         calculateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                calculateWeightLoss();
+                calculateWeightLoss(username);
             }
         });
     }
 
-    private void calculateWeightLoss() {
+    private void calculateWeightLoss(String username) {
         try {
-            // Get input values
-            double calorieIntake = Double.parseDouble(calorieIntakeField.getText());
-            double exerciseBurn = Double.parseDouble(exerciseBurnField.getText());
+            // Get date
             String futureDateString = futureDateField.getText();
 
             // Parse future date
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
             Date futureDate = dateFormat.parse(futureDateString);
 
             // Calculate weight loss
-            double weightLoss = calculateWeightLoss(calorieIntake, exerciseBurn, futureDate);
+            double weightLoss = WeightLossCalculator.calculateWeightLoss(username, futureDate);
 
             // Display result
             resultLabel.setText("Estimated Weight Loss by " + futureDateString + ": " + weightLoss + " kg");
@@ -74,35 +72,4 @@ public class WeightLossProjectionPanel extends JPanel {
         }
     }
 
-    private double calculateWeightLoss(double calorieIntake, double exerciseBurn, Date futureDate) {
-        // Calculate the net calorie deficit
-        double netCalorieDeficit = calorieIntake - exerciseBurn;
-
-        // Calculate the Weight loss in kg
-        double weightLoss = netCalorieDeficit / 7700;
-
-        // Calculate the number of days until the future date
-        long daysUntilFutureDate = daysBetween(new Date(), futureDate);
-
-        // Adjust Weight loss based on the number of days
-        return weightLoss * daysUntilFutureDate;
-    }
-
-    private long daysBetween(Date startDate, Date endDate) {
-        long diff = endDate.getTime() - startDate.getTime();
-        return diff / (24 * 60 * 60 * 1000);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("weight Loss Calculator");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-            WeightLossProjectionPanel calculatorPanel = new WeightLossProjectionPanel();
-            frame.getContentPane().add(calculatorPanel);
-
-            frame.setSize(400, 300);
-            frame.setVisible(true);
-        });
-    }
 }

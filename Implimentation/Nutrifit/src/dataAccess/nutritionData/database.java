@@ -17,14 +17,6 @@ public class database {
         return instance;
     }
 
-    public void loadDatabase() {
-        String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
-        wipeDB(url);
-        createDatabase(url);
-        initializeDatabase(url);
-        fillDatabase(url);
-    }
-
     private static void createDatabase(String url) {
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
@@ -440,40 +432,12 @@ public class database {
         }
     }
 
-    public static HashMap listFoods() {
-        HashMap<String, String> foodList = new HashMap<>();
+    public void loadDatabase() {
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
-        try (Connection conn = DriverManager.getConnection(url)) {
-            if (conn != null) {
-                DatabaseMetaData meta = conn.getMetaData();
-                Statement statement = conn.createStatement();
-                ResultSet rs = statement.executeQuery("SELECT FoodID, FoodDescription FROM foodName;");
-                while (rs.next()) {
-                    foodList.put(rs.getString("FoodID"), rs.getString("FoodDescription"));
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return foodList;
-    }
-
-    public HashMap itemNutrition(int id) {
-        HashMap<String, String> nutritionList = new HashMap<>();
-        String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
-        try (Connection conn = DriverManager.getConnection(url)) {
-            if (conn != null) {
-                DatabaseMetaData meta = conn.getMetaData();
-                Statement statement = conn.createStatement();
-                ResultSet rs = statement.executeQuery("SELECT NutrientName, NutrientValue FROM nutrientName JOIN nutrientAmount ON nutrientName.NutrientID = nutrientAmount.NutrientID WHERE FoodID = " + id + ";");
-                while (rs.next()) {
-                    nutritionList.put(rs.getString("NutrientName"), rs.getString("NutrientValue"));
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return nutritionList;
+        wipeDB(url);
+        createDatabase(url);
+        initializeDatabase(url);
+        fillDatabase(url);
     }
 
     public ArrayList<String> findFoodItem(String[] queryParams) {
@@ -484,20 +448,124 @@ public class database {
                 DatabaseMetaData meta = conn.getMetaData();
                 Statement statement = conn.createStatement();
                 StringBuilder sql = new StringBuilder();
-                sql.append("SELECT FoodID, FoodDescription FROM foodName WHERE FoodDescription LIKE '%");
+                sql.append("SELECT FoodDescription FROM foodName WHERE FoodDescription LIKE '%");
                 for (String query : queryParams) {
                     sql.append(query).append("%");
                 }
-                sql.append("%';");
+                sql.append("%' LIMIT 20;");
                 ResultSet rs = statement.executeQuery(sql.toString());
                 while (rs.next()) {
-                    foodList.add(rs.getString("FoodID") + " " + rs.getString("FoodDescription"));
+                    foodList.add(rs.getString("FoodDescription"));
                 }
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return foodList;
+    }
+    public int getProteinCount(ArrayList<Integer> foodIDs) {
+        String sql;
+        int result = 0;
+        String URL = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
+        try (Connection conn = DriverManager.getConnection(URL)) {
+            if (conn != null) {
+                for (Integer foodID : foodIDs) {
+                    sql = "SELECT COUNT(*) FROM foodName WHERE FoodID is " + foodID + " and (FoodGroupID is 5 or FoodGroupID is 7 or FoodGroupID is 10 or FoodGroupID is 13 or FoodGroupID is 15 or FoodGroupID is 17);";
+                    Statement statement = conn.createStatement();
+                    ResultSet rs = statement.executeQuery(sql);
+                    if (rs.getInt(1) > 0) {
+                        result++;
+                    }
+                }
+                return result;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("Protein count not found");
+        return -1;
+    }
+
+    public int getCarbCount(ArrayList<Integer> foodIDs) {
+        String sql;
+        int result = 0;
+        String URL = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
+        try (Connection conn = DriverManager.getConnection(URL)) {
+            if (conn != null) {
+                for (Integer foodID : foodIDs) {
+                    sql = "SELECT COUNT(*) FROM foodName WHERE FoodID is " + foodID + " and (FoodGroupID is 8 or FoodGroupID is 19 or FoodGroupID is 18 or FoodGroupID is 20);";
+                    Statement statement = conn.createStatement();
+                    ResultSet rs = statement.executeQuery(sql);
+                    if (rs.getInt(1) > 0) {
+                        result++;
+                    }
+                }
+                return result;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("Carb count not found");
+        return -1;
+    }
+
+    public int getFruitAndVegCount(ArrayList<Integer> foodIDs) {
+        String sql;
+        int result = 0;
+        String URL = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
+        try (Connection conn = DriverManager.getConnection(URL)) {
+            if (conn != null) {
+                for (Integer foodID : foodIDs) {
+                    sql = "SELECT COUNT(*) FROM foodName WHERE FoodID is " + foodID + " and (FoodGroupID is 9 or FoodID is 11 or FoodID is 16);";
+                    Statement statement = conn.createStatement();
+                    ResultSet rs = statement.executeQuery(sql);
+                    if (rs.getInt(1) > 0) {
+                        result++;
+                    }
+                }
+                return result;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("Fruit and Veg count not found");
+        return -1;
+    }
+
+    public int getID(String foodItem) {
+        String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
+        try (Connection conn = DriverManager.getConnection(url)) {
+            if (conn != null) {
+                DatabaseMetaData meta = conn.getMetaData();
+                Statement statement = conn.createStatement();
+                StringBuilder sql = new StringBuilder();
+                sql.append("SELECT FoodID FROM foodName WHERE FoodDescription is '").append(foodItem).append("';");
+                ResultSet rs = statement.executeQuery(sql.toString());
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("ID not found");
+        return -1;
+    }
+
+    public int getCalories(int foodID){
+        String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
+        try (Connection conn = DriverManager.getConnection(url)) {
+            if (conn != null) {
+                DatabaseMetaData meta = conn.getMetaData();
+                Statement statement = conn.createStatement();
+                StringBuilder sql = new StringBuilder();
+                sql.append("SELECT NutrientValue FROM nutrientAmount WHERE FoodID is ").append(foodID).append(" and NutrientID is 208;");
+                ResultSet rs = statement.executeQuery(sql.toString());
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("Calories not found");
+        return -1;
     }
 }
 

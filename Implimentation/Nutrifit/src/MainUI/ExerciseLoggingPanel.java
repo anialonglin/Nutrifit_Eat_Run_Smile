@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class ExerciseLoggingPanel extends JPanel {
     private JTextField dateField;
@@ -12,7 +13,7 @@ public class ExerciseLoggingPanel extends JPanel {
     private JComboBox<String> intensityComboBox;
     private JButton logExerciseButton;
 
-    public ExerciseLoggingPanel() {
+    public ExerciseLoggingPanel(String username) {
         setLayout(new GridBagLayout()); // Use GridBagLayout for more control
 
         GridBagConstraints constraints = new GridBagConstraints();
@@ -46,7 +47,7 @@ public class ExerciseLoggingPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Add code to log the exercise entry here
-                logExerciseEntry();
+                logExerciseEntry(username);
             }
         });
     }
@@ -65,14 +66,15 @@ public class ExerciseLoggingPanel extends JPanel {
         add(component, constraints);
     }
 
-    private void logExerciseEntry() {
+    private void logExerciseEntry(String username) {
         // Retrieve exercise entry information from input fields
         String date = dateField.getText();
         String exerciseType = (String) exerciseTypeComboBox.getSelectedItem();
         int duration = Integer.parseInt(durationField.getText());
-        String intensity = (String) intensityComboBox.getSelectedItem();
+        String intensity = Objects.requireNonNull(intensityComboBox.getSelectedItem()).toString();
 
         // Add code to save the exercise entry to your data storage (e.g., database)
+        application.exerciseManager.addExercise(username, date, exerciseType, duration, intensity);
 
         // Show a confirmation message
         JOptionPane.showMessageDialog(this, "Exercise entry logged successfully!");
