@@ -1,6 +1,6 @@
 //package deliverable1tests;
 //
-//import application.mealManager;
+//import application.foodManager;
 //import application.userManager;
 //import org.junit.Test;
 //
@@ -13,10 +13,10 @@
 //    public void addMeal() {
 //
 //        int profileId = userManager.createUserProfile("John", 35, true, 180, 180);
-//        int mealId = mealManager.addMeal(profileId, "meal1", new Date(2023, 1, 1));
-//        assertEquals(mealManager.getMeal(mealId).profileId, profileId);
-//        assertEquals(mealManager.getMeal(mealId).name, "meal1");
-//        assertEquals(mealManager.getMeal(mealId).date, new Date(2023, 1, 1));
+//        int mealId = foodManager.addMeal(profileId, "meal1", new Date(2023, 1, 1));
+//        assertEquals(foodManager.getMeal(mealId).profileId, profileId);
+//        assertEquals(foodManager.getMeal(mealId).name, "meal1");
+//        assertEquals(foodManager.getMeal(mealId).date, new Date(2023, 1, 1));
 //
 //    }
 //
@@ -24,9 +24,9 @@
 //    public void deleteMeal() {
 //
 //        int profileId = userManager.createUserProfile("John", 35, true, 180, 180);
-//        int mealId = mealManager.addMeal(profileId, "meal1", new Date(2023, 1, 1));
-//        mealManager.deleteMeal(mealId);
-//        assertEquals(mealManager.getMeal(mealId).profileId, profileId);
+//        int mealId = foodManager.addMeal(profileId, "meal1", new Date(2023, 1, 1));
+//        foodManager.deleteMeal(mealId);
+//        assertEquals(foodManager.getMeal(mealId).profileId, profileId);
 //    }
 //
 //}
