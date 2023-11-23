@@ -1,5 +1,6 @@
 package MainUI;
 
+import application.foodManager;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -8,20 +9,59 @@ import org.jfree.data.general.DefaultPieDataset;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class NutrientIntakeChart extends JPanel {
-    private final ChartPanel chartPanel;
-    private final DefaultPieDataset dataset;
+    ;
+    private static String username;
 
-    public NutrientIntakeChart(String title) {
-        this.dataset = createDataset();  // Initialize the dataset
+    public NutrientIntakeChart(String username) {
+            setLayout(new BorderLayout());
 
-        JFreeChart chart = createChart(title);
-        chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new Dimension(800, 600));
-        add(chartPanel);
+            // Create a comparison chart
+        JFreeChart chart = null;
+        try {
+            chart = create5DayCart(username);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        //create chart from user data
+        JFreeChart chart2 = null;
+        try {
+            chart2 = create10DayCart(username);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Create a chart panel and add it to the panel
+            ChartPanel chartPanel = new ChartPanel(chart);
+            ChartPanel chartPanel2 = new ChartPanel(chart2);
+            add(chartPanel, BorderLayout.WEST);
+            add(chartPanel2, BorderLayout.EAST);
+            // resize chart panel to fit the window
+            chartPanel.setPreferredSize(new Dimension(400, 400));
+            chartPanel2.setPreferredSize(new Dimension(400, 400));
+    }
+
+    private JFreeChart create10DayCart(String username) throws ParseException {
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        dataset.setValue("Protein", foodManager.getAlignment(username, 10)[0]);
+        dataset.setValue("Carbs", foodManager.getAlignment(username, 10)[1]);
+        dataset.setValue("Fruits and Veg", foodManager.getAlignment(username, 10)[2]);
+        dataset.setValue("Other/Unspecified", foodManager.getAlignment(username, 10)[3]);
+        return ChartFactory.createPieChart("Your Nutrient Intake", dataset, true, true, false);
+    }
+
+    private JFreeChart create5DayCart(String username) throws ParseException {
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        dataset.setValue("Protein", foodManager.getAlignment(username, 5)[0]);
+        dataset.setValue("Carbs", foodManager.getAlignment(username, 5)[1]);
+        dataset.setValue("Fruits and Veg", foodManager.getAlignment(username, 5)[2]);
+        dataset.setValue("Other/Unspecified", foodManager.getAlignment(username, 5)[3]);
+        return ChartFactory.createPieChart("Your Nutrient Intake", dataset, true, true, false);
     }
 
     public static void main(String[] args) {
@@ -29,40 +69,10 @@ public class NutrientIntakeChart extends JPanel {
             JFrame frame = new JFrame("Nutrient Intake Chart Test");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(500, 300);
-
-            NutrientIntakeChart nutrientIntakeChart = new NutrientIntakeChart("Nutrient Intake Chart");
-
-            // Dummy data for testing
-            Map<String, Double> dummyData = new HashMap<>();
-            dummyData.put("Proteins", 50.0);
-            dummyData.put("Carbs", 120.0);
-            dummyData.put("Fats", 30.0);
-
-            nutrientIntakeChart.updateNutrientData(dummyData);
-
-            frame.add(nutrientIntakeChart);
+            frame.add(new NutrientIntakeChart(username));
             frame.setVisible(true);
         });
     }
 
-    private JFreeChart createChart(String title) {
-        return ChartFactory.createPieChart(title, dataset, true, true, false);
-    }
 
-    private DefaultPieDataset createDataset() {
-        return new DefaultPieDataset();
-    }
-
-    public void updateNutrientData(Map<String, Double> nutrientData) {
-        // Clear existing data
-        dataset.clear();
-
-        // Add new data
-        for (Map.Entry<String, Double> entry : nutrientData.entrySet()) {
-            dataset.setValue(entry.getKey(), entry.getValue());
-        }
-
-        // Notify the chart that the dataset has changed
-        ((PiePlot) chartPanel.getChart().getPlot()).setDataset(dataset);
-    }
 }

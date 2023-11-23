@@ -1,5 +1,6 @@
 package application;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -19,7 +20,21 @@ public class foodManager {
 
     public static double[] getAlignment(String username) {
         HashMap<String, Integer> foodIDs = getFoodIDs(username);
-        System.out.println(foodIDs);
+        return getPercentages(foodIDs);
+    }
+
+    public static double[] getAlignment(String username, int days) {
+        //get foodIDs for the last int days
+        HashMap<String, Integer> foodIDs = null;
+        try {
+            foodIDs = getFoodIDs(username, days);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return getPercentages(foodIDs);
+    }
+
+    private static double[] getPercentages(HashMap<String, Integer> foodIDs) {
         int[] categories = new int[4];
         categories[0] = dataAccess.nutritionData.database.getInstance().getProteinCount(foodIDs);
         categories[1] = dataAccess.nutritionData.database.getInstance().getCarbCount(foodIDs);
@@ -37,6 +52,9 @@ public class foodManager {
     private static HashMap<String, Integer> getFoodIDs(String username) {
         return dataAccess.UserProfile.database.getInstance().getFoodIDs(username);
     }
+    private static HashMap<String, Integer> getFoodIDs(String username, int days) throws ParseException {
+        return dataAccess.UserProfile.database.getInstance().getFoodIDs(username, days);
+    }
 
     public static double avgCalories(String username) {
         HashMap<String, Integer> foodIDs = dataAccess.UserProfile.database.getInstance().getFoodIDs(username);
@@ -46,4 +64,6 @@ public class foodManager {
         }
         return dailyAverage/foodIDs.keySet().size();
     }
+
+
 }
