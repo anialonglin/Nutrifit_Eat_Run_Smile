@@ -404,18 +404,18 @@ public class database {
         //check if date string in dd-MM-yyyy from is after firstDay
         HashMap<String, Integer> foodIDsLastDays = new HashMap<>();
 
-            for (String date : foodIDs.keySet()) {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                Date date1 = null;
-                try {
-                    date1 = sdf.parse(date);
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-                if (date1.after(firstDay)) {
-                    foodIDsLastDays.put(date, foodIDs.get(date));
-                }
+        for (String date : foodIDs.keySet()) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            Date date1 = null;
+            try {
+                date1 = sdf.parse(date);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
             }
+            if (date1.after(firstDay)) {
+                foodIDsLastDays.put(date, foodIDs.get(date));
+            }
+        }
 
         return foodIDsLastDays;
     }

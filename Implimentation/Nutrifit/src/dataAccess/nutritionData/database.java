@@ -527,13 +527,20 @@ public class database {
     }
 
     public int getFruitAndVegCount(HashMap<String, Integer> foodIDs) {
+        //print all of the foodIDs
+        for (Integer foodID : foodIDs.values()) {
+            System.out.println(foodID);
+        }
         String sql;
         int result = 0;
         String URL = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
         try (Connection conn = DriverManager.getConnection(URL)) {
             if (conn != null) {
+                //loop through all the FoodIDs in the FoodID column
                 for (Integer foodID : foodIDs.values()) {
-                    sql = "SELECT COUNT(*) FROM foodName WHERE FoodID is " + foodID + " and (FoodGroupID is 9 or FoodID is 11 or FoodID is 16);";
+                    //check if the FoodID is in the fruit and veg food group
+                    sql = "SELECT COUNT(*) FROM foodName WHERE FoodID is " + foodID + " and (FoodGroupID is 9 or FoodGroupID is 11 or FoodGroupID is 12 or FoodGroupID is 14 or FoodGroupID is 16);";
+                    System.out.println(sql);
                     Statement statement = conn.createStatement();
                     ResultSet rs = statement.executeQuery(sql);
                     if (rs.getInt(1) > 0) {
