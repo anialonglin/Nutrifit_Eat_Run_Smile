@@ -96,7 +96,7 @@ public class UserMainUIScreen {
         nutrientIntakeChartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                showNutrientIntakeChart();
+                showNutrientIntakeChart(username);
             }
         });
 
@@ -172,25 +172,15 @@ public class UserMainUIScreen {
         calorieExerciseChartFrame.setVisible(true);
     }
 
-    private void showNutrientIntakeChart() {
+    private void showNutrientIntakeChart(String username) {
         // Create and display the NutrientIntakeChart
         JFrame nutrientIntakeChartFrame = new JFrame("Nutrient Intake Chart");
         nutrientIntakeChartFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         nutrientIntakeChartFrame.setSize(1000, 800);
 
         // Create an instance of NutrientIntakeChart
-        NutrientIntakeChart nutrientIntakeChart = new NutrientIntakeChart("Nutrient Intake Chart");
+        NutrientIntakeChart nutrientIntakeChart = new NutrientIntakeChart(username);
 
-        // Set dummy data for testing (replace with actual data retrieval logic)
-        Map<String, Double> dummyData = new HashMap<>();
-        dummyData.put("Proteins", 60.0);
-        dummyData.put("Carbs", 130.0);
-        dummyData.put("Fats", 25.0);
-
-        // Update the nutrient data in the chart
-        nutrientIntakeChart.updateNutrientData(dummyData);
-
-        // Add the NutrientIntakeChart to the NutrientIntakeChartFrame
         nutrientIntakeChartFrame.add(nutrientIntakeChart);
 
         nutrientIntakeChartFrame.setVisible(true);

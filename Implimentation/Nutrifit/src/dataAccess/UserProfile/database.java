@@ -1,7 +1,10 @@
 package dataAccess.UserProfile;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class database {
@@ -379,5 +382,41 @@ public class database {
             System.out.println(e.getMessage());
         }
         return dailyBurn;
+    }
+
+    public HashMap<String, Integer> getFoodIDs(String username, int days) {
+        //get foodIDs for the last int days
+        HashMap<String, Integer> foodIDs = new HashMap<>();
+        String sql = "SELECT Date, FoodID, Quantity FROM DietLog WHERE username is ?";
+        try (Connection conn = this.connect()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                for (int i = 0; i < rs.getInt("Quantity"); i++) {
+                    foodIDs.put(rs.getString("Date"), rs.getInt("FoodID"));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        Date firstDay = new Date(new Date().getTime() - ((long) days * 24 * 60 * 60 * 1000));
+        //check if date string in dd-MM-yyyy from is after firstDay
+        HashMap<String, Integer> foodIDsLastDays = new HashMap<>();
+
+            for (String date : foodIDs.keySet()) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                Date date1 = null;
+                try {
+                    date1 = sdf.parse(date);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+                if (date1.after(firstDay)) {
+                    foodIDsLastDays.put(date, foodIDs.get(date));
+                }
+            }
+
+        return foodIDsLastDays;
     }
 }

@@ -52,6 +52,7 @@ public class CalorieExerciseChart extends JPanel {
         XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(calorieSeries);
         dataset.addSeries(exerciseSeries);
+
         return dataset;
     }
 
