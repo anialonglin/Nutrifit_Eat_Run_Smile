@@ -36,4 +36,8 @@ public class userManager {
         dataAccess.UserProfile.database.getInstance().setWeight(username, weight);
     }
 
+    public static double getWeight(String username) {
+        return dataAccess.UserProfile.database.getInstance().getWeight(username);
+    }
+
 }

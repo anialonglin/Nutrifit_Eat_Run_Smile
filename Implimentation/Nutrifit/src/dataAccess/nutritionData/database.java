@@ -463,13 +463,13 @@ public class database {
         }
         return foodList;
     }
-    public int getProteinCount(ArrayList<Integer> foodIDs) {
+    public int getProteinCount(HashMap<String, Integer> foodIDs) {
         String sql;
         int result = 0;
         String URL = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
         try (Connection conn = DriverManager.getConnection(URL)) {
             if (conn != null) {
-                for (Integer foodID : foodIDs) {
+                for (Integer foodID : foodIDs.values()) {
                     sql = "SELECT COUNT(*) FROM foodName WHERE FoodID is " + foodID + " and (FoodGroupID is 5 or FoodGroupID is 7 or FoodGroupID is 10 or FoodGroupID is 13 or FoodGroupID is 15 or FoodGroupID is 17);";
                     Statement statement = conn.createStatement();
                     ResultSet rs = statement.executeQuery(sql);
@@ -486,13 +486,13 @@ public class database {
         return -1;
     }
 
-    public int getCarbCount(ArrayList<Integer> foodIDs) {
+    public int getCarbCount(HashMap<String, Integer> foodIDs) {
         String sql;
         int result = 0;
         String URL = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
         try (Connection conn = DriverManager.getConnection(URL)) {
             if (conn != null) {
-                for (Integer foodID : foodIDs) {
+                for (Integer foodID : foodIDs.values()) {
                     sql = "SELECT COUNT(*) FROM foodName WHERE FoodID is " + foodID + " and (FoodGroupID is 8 or FoodGroupID is 19 or FoodGroupID is 18 or FoodGroupID is 20);";
                     Statement statement = conn.createStatement();
                     ResultSet rs = statement.executeQuery(sql);
@@ -509,13 +509,13 @@ public class database {
         return -1;
     }
 
-    public int getFruitAndVegCount(ArrayList<Integer> foodIDs) {
+    public int getFruitAndVegCount(HashMap<String, Integer> foodIDs) {
         String sql;
         int result = 0;
         String URL = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
         try (Connection conn = DriverManager.getConnection(URL)) {
             if (conn != null) {
-                for (Integer foodID : foodIDs) {
+                for (Integer foodID : foodIDs.values()) {
                     sql = "SELECT COUNT(*) FROM foodName WHERE FoodID is " + foodID + " and (FoodGroupID is 9 or FoodID is 11 or FoodID is 16);";
                     Statement statement = conn.createStatement();
                     ResultSet rs = statement.executeQuery(sql);

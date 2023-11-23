@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 public class WeightLossProjectionPanel extends JPanel {
     private JLabel calorieIntakeField;
@@ -25,7 +26,7 @@ public class WeightLossProjectionPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // Create components
-        calorieIntakeField = new JLabel(application.foodManager.avgCalories(username));
+        calorieIntakeField = new JLabel(Double.parseDouble(application.foodManager.avgCalories(username)));
         exerciseBurnField = new JLabel();
         futureDateField = new JTextField(10);
         calculateButton = new JButton("calculate");
@@ -71,5 +72,4 @@ public class WeightLossProjectionPanel extends JPanel {
             resultLabel.setText("Invalid input. Please enter valid numbers and date.");
         }
     }
-
 }
