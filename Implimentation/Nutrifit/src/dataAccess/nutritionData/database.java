@@ -432,6 +432,23 @@ public class database {
         }
     }
 
+    public static double getCalories(Integer FoodID) {
+        String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
+        double calories = 0;
+        String sql = "SELECT NutrientValue FROM nutrientAmount WHERE FoodID = ? AND NutrientID = 208";
+        try (Connection conn = DriverManager.getConnection(url)) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, FoodID);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                calories = rs.getDouble("Calories");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return calories;
+    }
+
     public void loadDatabase() {
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
         wipeDB(url);
@@ -550,7 +567,7 @@ public class database {
         return -1;
     }
 
-    public int getCalories(int foodID){
+    public static int getCalories(int foodID){
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {

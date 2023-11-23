@@ -71,13 +71,27 @@ public class database {
         }
     }
 
+    public static double calorieBurned(String username, int exerciseID) {
+
+        switch (dataAccess.UserProfile.database.getInstance().getExerciseIntensity(exerciseID)) {
+            case 1:
+                return (dataAccess.UserProfile.database.getInstance().getExerciseDuration(exerciseID) * 2 * dataAccess.UserProfile.database.getInstance().getWeight(username)) / 200;
+            case 2:
+                return (dataAccess.UserProfile.database.getInstance().getExerciseDuration(exerciseID) * 5 * dataAccess.UserProfile.database.getInstance().getWeight(username)) / 200;
+            case 3:
+                return (dataAccess.UserProfile.database.getInstance().getExerciseDuration(exerciseID) * 8 * dataAccess.UserProfile.database.getInstance().getWeight(username)) / 200;
+            case 4:
+                return (dataAccess.UserProfile.database.getInstance().getExerciseDuration(exerciseID) * 10 * dataAccess.UserProfile.database.getInstance().getWeight(username)) / 200;
+        }
+        return -1;
+    }
+
     private Connection connect() {
         // SQLite connection string
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/UserProfile/User.db";
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
-            System.out.println("Connection successful!");
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Connection failed: " + e.getMessage());
@@ -128,13 +142,13 @@ public class database {
             pstmt.setInt(5, intensity);
             pstmt.executeUpdate();
             System.out.println("A new exercise log has been inserted.");
-            return pstmt.getGeneratedKeys().getInt(1);
+            return 1;
         } catch (SQLException e) {
+            System.out.println("weewoo");
             System.out.println(e.getMessage());
             return -1;
         }
     }
-
 
     public ArrayList<String> listProfiles() {
         // List all user profiles
@@ -175,19 +189,6 @@ public class database {
             System.out.println(e.getMessage());
         }
         return exercise;
-    }
-
-    public void deleteExercise(String username, int exerciseId) {
-        // Delete an exercise log
-        String sql = "DELETE FROM ExerciseLog WHERE username = ? AND ID = ?";
-        try (Connection conn = this.connect()) {
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, username);
-            pstmt.setInt(2, exerciseId);
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     public void deleteUserProfile(String username) {
@@ -288,22 +289,6 @@ public class database {
         return foodIDs;
     }
 
-    public double getCalories(Integer integer) {
-        double calories = 0;
-        String sql = "SELECT Calories FROM NutritionData WHERE ID is ?";
-        try (Connection conn = this.connect()) {
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, integer);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                calories = rs.getDouble("Calories");
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return calories;
-    }
-
     public HashMap<String, Integer> getExerciseIDs(String username) {
         HashMap<String, Integer> exerciseIDs = new HashMap<>();
         String sql = "SELECT Date, ID FROM ExerciseLog WHERE username is ?";
@@ -362,7 +347,37 @@ public class database {
         return duration;
     }
 
-    public double dailyIntake(String date) {
-        
+    public double dailyIntake(String username, String date) {
+        double dailyIntake = 0;
+        String sql = "SELECT FoodID, Quantity FROM DietLog WHERE Date is ? and username is ?";
+        try (Connection conn = this.connect()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, date);
+            pstmt.setString(2, username);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                dailyIntake += dataAccess.nutritionData.database.getCalories(rs.getInt("FoodID")) * rs.getInt("Quantity");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return dailyIntake;
+    }
+
+    public double dailyBurn(String username, String date) {
+        double dailyBurn = 0;
+        String sql = "SELECT ID FROM ExerciseLog WHERE Date is ? and username is ?";
+        try (Connection conn = this.connect()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, date);
+            pstmt.setString(2, username);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                dailyBurn += calorieBurned(username, rs.getInt("ID"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return dailyBurn;
     }
 }

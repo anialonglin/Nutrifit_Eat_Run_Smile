@@ -1,6 +1,5 @@
 package application;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class exerciseManager {
@@ -23,24 +22,15 @@ public class exerciseManager {
         return dataAccess.UserProfile.database.getInstance().insertExerciseLog(username, date, exerciseType, duration, intensityint);
     }
 
-    public static double calorieBurned(String username, int exerciseID){
-        switch (dataAccess.UserProfile.database.getInstance().getExerciseIntensity(exerciseID)){
-            case 1:
-                return (dataAccess.UserProfile.database.getInstance().getExerciseDuration(exerciseID)*2*dataAccess.UserProfile.database.getInstance().getWeight(username))/200;
-            case 2:
-                return (dataAccess.UserProfile.database.getInstance().getExerciseDuration(exerciseID)*5*dataAccess.UserProfile.database.getInstance().getWeight(username))/200;
-            case 3:
-                return (dataAccess.UserProfile.database.getInstance().getExerciseDuration(exerciseID)*8*dataAccess.UserProfile.database.getInstance().getWeight(username))/200;
-            case 4:
-                return (dataAccess.UserProfile.database.getInstance().getExerciseDuration(exerciseID)*11*dataAccess.UserProfile.database.getInstance().getWeight(username))/200;
-        }
-        return -1;
-    }
+
 
     public static double avgExercise(String username) {
-       //select NutrientValue from nutrientAmount where FoodID = FoodID and NutrientID = 208
         HashMap<String, Integer> exerciseIDs = dataAccess.UserProfile.database.getInstance().getExerciseIDs(username);
         double average = 0;
-
+        //get average calories burned per day
+        for (String date : exerciseIDs.keySet()) {
+            average += dataAccess.UserProfile.database.getInstance().dailyBurn(username, date);
+        }
+        return average/exerciseIDs.keySet().size();
     }
 }

@@ -13,21 +13,20 @@ import java.util.HashMap;
 public class WeightLossProjectionPanel extends JPanel {
     private JLabel calorieIntakeField;
     private JLabel exerciseBurnField;
+    private JLabel BMRField;
     private JTextField futureDateField;
     private JButton calculateButton;
     private JLabel resultLabel;
 
-    private WeightLossCalculator weightLossCalculator;
-
     public WeightLossProjectionPanel(String username) {
-        weightLossCalculator = new WeightLossCalculator();
 
         // Set layout manager
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // Create components
-        calorieIntakeField = new JLabel(Double.parseDouble(application.foodManager.avgCalories(username)));
-        exerciseBurnField = new JLabel();
+        calorieIntakeField = new JLabel(String.valueOf(application.foodManager.avgCalories(username)));
+        exerciseBurnField = new JLabel(String.valueOf(application.exerciseManager.avgExercise(username)));
+        BMRField = new JLabel(String.valueOf(application.WeightLossCalculator.BMRcalc(username)));
         futureDateField = new JTextField(10);
         calculateButton = new JButton("calculate");
         resultLabel = new JLabel();
@@ -38,6 +37,9 @@ public class WeightLossProjectionPanel extends JPanel {
 
         add(new JLabel("Average Calories Burned through Exercise:"));
         add(exerciseBurnField);
+
+        add(new JLabel("BMR:"));
+        add(BMRField);
 
         add(new JLabel("Select a Date in the Future (mm-dd-yyyy):"));
         add(futureDateField);
@@ -60,7 +62,7 @@ public class WeightLossProjectionPanel extends JPanel {
             String futureDateString = futureDateField.getText();
 
             // Parse future date
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
             Date futureDate = dateFormat.parse(futureDateString);
 
             // Calculate weight loss

@@ -46,8 +46,6 @@ public class DietLoggingPanel extends JPanel {
         logDietButton = new JButton("Log Diet");
         addComponent(logDietButton, 6, 0, 2, 1, constraints);
 
-        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(foodItemField);
-        frame.pack();
         // Add an action listener to the log diet button
         logDietButton.addActionListener(new ActionListener() {
             @Override
@@ -69,8 +67,6 @@ public class DietLoggingPanel extends JPanel {
                 for (String foodItem : foodManager.queryFoodItem(foodItemField.getText())) {
                     foodItemDropdown.addItem(foodItem);
                 }
-                //resize window to fit dropdown
-                frame.pack();
             }
         });
     }

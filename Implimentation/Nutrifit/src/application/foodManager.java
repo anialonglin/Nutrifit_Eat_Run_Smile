@@ -35,14 +35,14 @@ public class foodManager {
     }
 
     private static HashMap<String, Integer> getFoodIDs(String username) {
-        ;
+        return dataAccess.UserProfile.database.getInstance().getFoodIDs(username);
     }
 
     public static double avgCalories(String username) {
         HashMap<String, Integer> foodIDs = dataAccess.UserProfile.database.getInstance().getFoodIDs(username);
         double dailyAverage = 0;
         for (String date : foodIDs.keySet()) {
-            dailyAverage += dataAccess.UserProfile.database.getInstance().dailyIntake(date);
+            dailyAverage += dataAccess.UserProfile.database.getInstance().dailyIntake(username, date);
         }
         return dailyAverage/foodIDs.keySet().size();
     }
