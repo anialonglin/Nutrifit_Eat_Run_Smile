@@ -1,6 +1,7 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class foodManager {
     public static void addMeal(String username, String date, String mealType, String foodItem, int quantity) {
@@ -17,7 +18,7 @@ public class foodManager {
     }
 
     public static double[] getAlignment(String username) {
-        ArrayList<Integer> foodIDs = getFoodIDs(username);
+        HashMap<String, Integer> foodIDs = getFoodIDs(username);
         System.out.println(foodIDs);
         int[] categories = new int[4];
         categories[0] = dataAccess.nutritionData.database.getInstance().getProteinCount(foodIDs);
@@ -33,17 +34,16 @@ public class foodManager {
         return categoriesPercentages;
     }
 
-    private static ArrayList<Integer> getFoodIDs(String username) {
+    private static HashMap<String, Integer> getFoodIDs(String username) {
         return dataAccess.UserProfile.database.getInstance().getFoodIDs(username);
     }
 
     public static double avgCalories(String username) {
-        double average = 0;
-        ArrayList<Integer> foodIDs = getFoodIDs(username);
-        for (int i = 0; i < foodIDs.size(); i++) {
-            average += dataAccess.nutritionData.database.getInstance().getCalories(foodIDs.get(i));
+        HashMap<String, Integer> foodIDs = dataAccess.UserProfile.database.getInstance().getFoodIDs(username);
+        double dailyAverage = 0;
+        for (String date : foodIDs.keySet()) {
+            dailyAverage += dataAccess.UserProfile.database.getInstance().dailyIntake(username, date);
         }
-        average /= foodIDs.size();
-        return average;
+        return dailyAverage/foodIDs.keySet().size();
     }
 }
