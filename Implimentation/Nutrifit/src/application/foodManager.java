@@ -26,11 +26,7 @@ public class foodManager {
     public static double[] getAlignment(String username, int days) {
         //get foodIDs for the last int days
         HashMap<String, Integer> foodIDs = null;
-        try {
-            foodIDs = getFoodIDs(username, days);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+        foodIDs = getFoodIDs(username, days);
         return getPercentages(foodIDs);
     }
 
@@ -52,7 +48,7 @@ public class foodManager {
     private static HashMap<String, Integer> getFoodIDs(String username) {
         return dataAccess.UserProfile.database.getInstance().getFoodIDs(username);
     }
-    private static HashMap<String, Integer> getFoodIDs(String username, int days) throws ParseException {
+    private static HashMap<String, Integer> getFoodIDs(String username, int days) {
         return dataAccess.UserProfile.database.getInstance().getFoodIDs(username, days);
     }
 
