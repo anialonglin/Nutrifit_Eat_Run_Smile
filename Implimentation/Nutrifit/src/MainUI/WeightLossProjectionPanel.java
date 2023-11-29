@@ -34,16 +34,12 @@ public class WeightLossProjectionPanel extends JPanel {
         // Add components to the panel
         add(new JLabel("Average daily Calories Intake:"));
         add(calorieIntakeField);
-
         add(new JLabel("Average Calories Burned through Exercise:"));
         add(exerciseBurnField);
-
         add(new JLabel("BMR:"));
         add(BMRField);
-
         add(new JLabel("Select a Date in the Future (dd-MM-yyyy):"));
         add(futureDateField);
-
         add(calculateButton);
         add(resultLabel);
 
