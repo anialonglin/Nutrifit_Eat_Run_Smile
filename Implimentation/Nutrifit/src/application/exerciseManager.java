@@ -1,6 +1,7 @@
 package application;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class exerciseManager {
@@ -20,25 +21,28 @@ public class exerciseManager {
                 intensityint = 4;
                 break;
         }
-        //convert dd-MM-yyyy date to sql date
-        java.sql.Date sqlDate = null;
         try {
-            java.util.Date utilDate = new java.text.SimpleDateFormat("dd-MM-yyyy").parse(date);
-            sqlDate = new java.sql.Date(utilDate.getTime());
+            //convert dd-MM-yyyy date to sql date
+
+            return dataAccess.UserProfile.database.getInstance().insertExerciseLog(username,new Date(new java.text.SimpleDateFormat("dd-MM-yyyy").parse(date).getTime()) , exerciseType, duration, intensityint);
         } catch (java.text.ParseException e) {
             e.printStackTrace();
         }
-        return dataAccess.UserProfile.database.getInstance().insertExerciseLog(username, sqlDate, exerciseType, duration, intensityint);
+        System.out.println("someting went wrong");
+        return 1;
     }
 
     public static double avgExercise(String username) {
-        HashMap<Date, Integer> exerciseIDs = dataAccess.UserProfile.database.getInstance().getExerciseIDs(username);
+        HashMap<Date, ArrayList<Integer>> exerciseIDs = dataAccess.UserProfile.database.getInstance().getExerciseIDs(username);
         //loop through days and get average exercise
         double total = 0;
         for (Date date : exerciseIDs.keySet()) {
-            total += dataAccess.UserProfile.database.getInstance().dailyBurn(username, date);
+            ArrayList<Integer> ids = exerciseIDs.get(date);
+            for (int id : ids) {
+                total += dataAccess.UserProfile.database.getInstance().calorieBurned(username, id);
+            }
         }
-        System.out.println("avgExercise:"+(total / exerciseIDs.keySet().size()));
+        System.out.println("avgExercise:" + (total / exerciseIDs.keySet().size()));
         return total / exerciseIDs.keySet().size();
     }
 }
