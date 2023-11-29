@@ -191,16 +191,13 @@ public class UserMainUIScreen {
         JFrame dietAlignmentFrame = new JFrame("Diet Alignment Panel");
         dietAlignmentFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         dietAlignmentFrame.setSize(1000, 800);
-
         DietAlignmentPanel dietAlignmentPanel = new DietAlignmentPanel(username);
-
         dietAlignmentFrame.add(dietAlignmentPanel);
         dietAlignmentFrame.setVisible(true);
     }
 
     private void showDeleteProfileConfirmation(String username) {
         int option = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete your profile?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
-
         if (option == JOptionPane.YES_OPTION) {
             application.userManager.deleteUserProfile(username);
             JOptionPane.showMessageDialog(null, "Profile deleted successfully!");

@@ -95,13 +95,13 @@ public class database {
         }
     }
 
-    public void insertDietLog(String username, String date, String mealType, String foodItem, int foodID, int quantity) {
+    public void insertDietLog(String username, Date date, String mealType, String foodItem, int foodID, int quantity) {
         // Insert a new diet log into the DietLog table
         String sql = "INSERT INTO DietLog(username, Date, Meal_Type, Food_item, FoodID, Quantity) VALUES(?,?,?,?,?,?)";
 
         try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, username);
-            pstmt.setString(2, date);
+            pstmt.setDate(2, date);
             pstmt.setString(3, mealType);
             pstmt.setString(4, foodItem);
             pstmt.setInt(5, foodID);

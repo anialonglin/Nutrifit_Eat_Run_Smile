@@ -31,10 +31,12 @@ public class DietAlignmentPanel extends JPanel {
 
     private JFreeChart createUserChart(String username) {
         DefaultPieDataset dataset = new DefaultPieDataset();
-        dataset.setValue("Protein", foodManager.getAlignment(username)[0]);
-        dataset.setValue("Carbs", foodManager.getAlignment(username)[1]);
-        dataset.setValue("Fruits and Veg", foodManager.getAlignment(username)[2]);
-        dataset.setValue("Other/Unspecified", foodManager.getAlignment(username)[3]);
+        double[] percentages = foodManager.getAlignment(username);
+        dataset.setValue("Protein", percentages[0]);
+        dataset.setValue("Carbs", percentages[1]);
+        dataset.setValue("Fruits and Veg", percentages[2]);
+        dataset.setValue("Other/Unspecified", percentages[3]);
+        System.out.println(percentages[0] + " " + percentages[1] + " " + percentages[2] + " " + percentages[3] + " hit");
         return ChartFactory.createPieChart("Your Nutrient Intake", dataset, true, true, false);
     }
 

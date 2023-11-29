@@ -7,7 +7,15 @@ import java.util.HashMap;
 
 public class foodManager {
     public static void addMeal(String username, String date, String mealType, String foodItem, int quantity) {
-        dataAccess.UserProfile.database.getInstance().insertDietLog(username, date, mealType, foodItem, dataAccess.nutritionData.database.getInstance().getID(foodItem), quantity);
+        //convert dd-MM-yyyy date to sql date
+        java.util.Date utilDate = null;
+        try {
+            utilDate = new java.text.SimpleDateFormat("dd-MM-yyyy").parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        dataAccess.UserProfile.database.getInstance().insertDietLog(username, sqlDate, mealType, foodItem, dataAccess.nutritionData.database.getInstance().getID(foodItem), quantity);
     }
 
     public static void reloadDatabase() {
