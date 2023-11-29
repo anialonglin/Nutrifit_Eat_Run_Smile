@@ -70,6 +70,4 @@ public class NutrientIntakeChart extends JPanel {
             frame.setVisible(true);
         });
     }
-
-
 }
