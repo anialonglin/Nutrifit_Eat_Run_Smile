@@ -41,7 +41,7 @@ public class WeightLossProjectionPanel extends JPanel {
         add(new JLabel("BMR:"));
         add(BMRField);
 
-        add(new JLabel("Select a Date in the Future (mm-dd-yyyy):"));
+        add(new JLabel("Select a Date in the Future (dd-MM-yyyy):"));
         add(futureDateField);
 
         add(calculateButton);
