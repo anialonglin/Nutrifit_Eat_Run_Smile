@@ -22,7 +22,7 @@ public class DietLoggingPanel extends JPanel {
         constraints.insets = new Insets(5, 5, 5, 5); // Adjust spacing
 
         // Add labels and input fields for diet logging
-        addComponent(new JLabel("Date:"), 0, 0, constraints);
+        addComponent(new JLabel("Date(dd-MM-yyyy):"), 0, 0, constraints);
         dateField = new JTextField(15); // Set the column width (adjust as needed)
         addComponent(dateField, 0, 1, constraints);
 
