@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 public class UserMainUIScreen {
     private boolean closeWindow = false;
@@ -152,9 +153,13 @@ public class UserMainUIScreen {
     private void showCalorieExerciseChart(String user) {
         JFrame calorieExerciseChartFrame = new JFrame("CalorieExerciseChart Management");
         calorieExerciseChartFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        calorieExerciseChartFrame.setSize(1000, 800);
+        calorieExerciseChartFrame.setSize(900, 600);
 
         CalorieExerciseChart calorieExerciseChart = new CalorieExerciseChart("Calorie and Exercise Chart", user);
+
+        // Example: Adding data points
+        Date currentDate = new Date();
+        calorieExerciseChart.addDataPoint(currentDate, 1500, 300);
 
         calorieExerciseChartFrame.setContentPane(calorieExerciseChart);
 
