@@ -1,20 +1,14 @@
 package MainUI;
 
-import application.DietAlignmentCalculator;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.Map;
 
 public class UserMainUIScreen {
     private boolean closeWindow = false;
 
     public UserMainUIScreen(String username) {
-        // Initialize the DietAlignmentCalculator
-        DietAlignmentCalculator dietAlignmentCalculator = new DietAlignmentCalculator();
         // Create and display the UserMainUIScreen
         JFrame userMainScreenFrame = new JFrame("User Main Screen");
         userMainScreenFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -77,12 +71,7 @@ public class UserMainUIScreen {
         DietAlignmentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Calculate the average plate and get CFG recommendations using DietAlignmentCalculator
-                Map<String, Double> averagePlate = dietAlignmentCalculator.calculateAveragePlate(/* pass necessary parameters */);
-                Map<String, Double> cfgRecommendations = dietAlignmentCalculator.getCfgRecommendations();
 
-                // Display the DietAlignmentPanel with comparison chart
-                showDietAlignmentPanel(username);
             }
         });
 

@@ -20,14 +20,13 @@ public class foodManager {
     }
 
     public static double[] getAlignment(String username) {
-        HashMap<Date, Integer> foodIDs = getFoodIDs(username);
+        HashMap<Date, Integer> foodIDs = dataAccess.UserProfile.database.getInstance().getFoodIDs(username);
         return getPercentages(foodIDs);
     }
 
     public static double[] getAlignment(String username, int days) {
         //get foodIDs for the last int days
-        HashMap<Date, Integer> foodIDs = null;
-        foodIDs = getFoodIDs(username, days);
+        HashMap<Date, Integer> foodIDs = dataAccess.UserProfile.database.getInstance().getFoodIDs(username, days);
         return getPercentages(foodIDs);
     }
 
