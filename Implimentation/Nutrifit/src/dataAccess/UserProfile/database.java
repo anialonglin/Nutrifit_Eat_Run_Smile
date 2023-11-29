@@ -15,8 +15,8 @@ public class database {
         }
         return instance;
     }
-    /*database creation*/
 
+    /*database creation*/
     public static void main(String[] args) {
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/UserProfile/User.db";
         wipeDB(url);
@@ -206,7 +206,23 @@ public class database {
     }
 
     public HashMap<Date, Integer> getFoodIDs(String username, int days) {
-        return null;
+        //get all entrys with a Date within the last int days
+        HashMap<Date, Integer> foodIDs = new HashMap<>();
+        String sql = "SELECT Date, FoodID, Quantity FROM DietLog WHERE username is ? AND Date > ?";
+        try (Connection conn = this.connect()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, username);
+            pstmt.setDate(2, new Date(System.currentTimeMillis() - days * 86400000L));
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                for (int i = 0; i < rs.getInt("Quantity"); i++) {
+                    foodIDs.put(rs.getDate("Date"), rs.getInt("FoodID"));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return foodIDs;
     }
 
     public double dailyIntake(String username, Date date) {
@@ -326,9 +342,7 @@ public class database {
         return dailyBurn;
     }
 
-
     /*data modification*/
-    //personal
     public void deleteUserProfile(String username) {
         // Delete a user profile
         String sql = "DELETE FROM UserProfile WHERE username = ?";
