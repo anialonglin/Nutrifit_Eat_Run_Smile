@@ -3,6 +3,7 @@ package dataAccess.UserProfile;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class database {
     /*Singleton pattern*/
@@ -113,12 +114,12 @@ public class database {
         }
     }
 
-    public int insertExerciseLog(String username, String date, String exerciseType, int duration, int intensity) {
+    public int insertExerciseLog(String username, Date date, String exerciseType, int duration, int intensity) {
         // Insert a new exercise log into the ExerciseLog table
         String sql = "INSERT INTO ExerciseLog(username, Date, Exercise_Type, Duration, Intensity) VALUES(?,?,?,?,?)";
         try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, username);
-            pstmt.setString(2, date);
+            pstmt.setDate(2, date);
             pstmt.setString(3, exerciseType);
             pstmt.setInt(4, duration);
             pstmt.setInt(5, intensity);
@@ -187,28 +188,32 @@ public class database {
 
 
     //food
-    public HashMap<Date, Integer> getFoodIDs(String username) {
-        HashMap<Date, Integer> foodIDs = new HashMap<>();
+    public HashMap<Date, ArrayList<Integer>> getFoodIDs(String username) {
+        HashMap<Date, ArrayList<Integer>> foodIDs = new HashMap<>();
         String sql = "SELECT Date, FoodID, Quantity FROM DietLog WHERE username is ?";
         try (Connection conn = this.connect()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
+            ArrayList<Integer> foodID = new ArrayList<>();
             while (rs.next()) {
                 for (int i = 0; i < rs.getInt("Quantity"); i++) {
-                    foodIDs.put(rs.getDate("Date"), rs.getInt("FoodID"));
+                    foodID.add(rs.getInt("FoodID"));
                 }
+                foodIDs.put(rs.getDate("Date"), foodID);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        System.out.println("getFoodID fin: "+foodIDs);
         return foodIDs;
     }
 
-    public HashMap<Date, Integer> getFoodIDs(String username, int days) {
+    public HashMap<Date, ArrayList<Integer>> getFoodIDs(String username, int days) {
         //get all entrys with a Date within the last int days
-        HashMap<Date, Integer> foodIDs = new HashMap<>();
+        HashMap<Date, ArrayList<Integer>> foodIDs = new HashMap<>();
         String sql = "SELECT Date, FoodID, Quantity FROM DietLog WHERE username is ? AND Date > ?";
+        ArrayList<Integer> foodID = new ArrayList<>();
         try (Connection conn = this.connect()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, username);
@@ -216,8 +221,9 @@ public class database {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 for (int i = 0; i < rs.getInt("Quantity"); i++) {
-                    foodIDs.put(rs.getDate("Date"), rs.getInt("FoodID"));
+                    foodID.add(rs.getInt("FoodID"));
                 }
+                foodIDs.put(rs.getDate("Date"), foodID);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -234,7 +240,7 @@ public class database {
             pstmt.setString(2, username);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                dailyIntake += dataAccess.nutritionData.database.getCalories(rs.getInt("FoodID")) * rs.getInt("Quantity");
+                dailyIntake += dataAccess.nutritionData.database.getInstance().getCalories(rs.getInt("FoodID")) * rs.getInt("Quantity");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -256,6 +262,7 @@ public class database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        System.out.println("getExerciseID "+exerciseIDs);
         return exerciseIDs;
     }
 
@@ -312,7 +319,7 @@ public class database {
     }
 
     public static double calorieBurned(String username, int exerciseID) {
-        return switch (database.getInstance().getExerciseIntensity(exerciseID)) {
+        double burn = switch (database.getInstance().getExerciseIntensity(exerciseID)) {
             case 1 ->
                     (database.getInstance().getExerciseDuration(exerciseID) * 2 * database.getInstance().getWeight(username)) / 200;
             case 2 ->
@@ -323,6 +330,8 @@ public class database {
                     (database.getInstance().getExerciseDuration(exerciseID) * 10 * database.getInstance().getWeight(username)) / 200;
             default -> -1;
         };
+        System.out.println("calorieBurned: " + burn);
+        return burn;
     }
 
     public double dailyBurn(String username, Date date) {

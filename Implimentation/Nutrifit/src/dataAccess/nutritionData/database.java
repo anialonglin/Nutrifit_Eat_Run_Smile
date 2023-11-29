@@ -482,79 +482,42 @@ public class database {
         return -1;
     }
 
-    public int getProteinCount(HashMap<Date, Integer> foodIDs) {
-        String sql;
-        int result = 0;
-        String URL = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
-        try (Connection conn = DriverManager.getConnection(URL)) {
+    public int[] getFoodGroups(HashMap<Date, ArrayList<Integer>> foodIDs) {
+        System.out.println("foodgroupsinsize: " + foodIDs.size());
+        int[] catagories = new int[4];
+        String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
+        String sql = "SELECT FoodGroupID FROM foodName WHERE FoodID is ?;";
+        try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
-                for (Integer foodID : foodIDs.values()) {
-                    sql = "SELECT COUNT(*) FROM foodName WHERE FoodID is " + foodID + " and (FoodGroupID is 5 or FoodGroupID is 7 or FoodGroupID is 10 or FoodGroupID is 13 or FoodGroupID is 15 or FoodGroupID is 17);";
-                    Statement statement = conn.createStatement();
-                    ResultSet rs = statement.executeQuery(sql);
-                    if (rs.getInt(1) > 0) {
-                        result++;
+                DatabaseMetaData meta = conn.getMetaData();
+                PreparedStatement statement = conn.prepareStatement(sql);
+                for (ArrayList<Integer> foodIDList : foodIDs.values()) {
+                    for (int foodID : foodIDList) {
+                        statement.setInt(1, foodID);
+                        ResultSet rs = statement.executeQuery();
+                        switch (rs.getInt(1)) {
+                            case 5, 7, 10, 13, 15, 17:
+                                catagories[0]++;
+                                break;
+                            case 8, 18, 19, 20:
+                                catagories[1]++;
+                                break;
+                            case 9, 11, 12, 14, 16:
+                                catagories[2]++;
+                                break;
+                            default:
+                                catagories[3]++;
+                        }
                     }
                 }
-                return result;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        System.out.println("Protein count not found");
-        return -1;
+        return catagories;
     }
 
-    public int getCarbCount(HashMap<Date, Integer> foodIDs) {
-        String sql;
-        int result = 0;
-        String URL = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
-        try (Connection conn = DriverManager.getConnection(URL)) {
-            if (conn != null) {
-                for (Integer foodID : foodIDs.values()) {
-                    sql = "SELECT COUNT(*) FROM foodName WHERE FoodID is " + foodID + " and (FoodGroupID is 8 or FoodGroupID is 19 or FoodGroupID is 18 or FoodGroupID is 20);";
-                    Statement statement = conn.createStatement();
-                    ResultSet rs = statement.executeQuery(sql);
-                    if (rs.getInt(1) > 0) {
-                        result++;
-                    }
-                }
-                return result;
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        System.out.println("Carb count not found");
-        return -1;
-    }
-
-    public int getFruitAndVegCount(HashMap<Date, Integer> foodIDs) {
-        String sql;
-        int result = 0;
-        String URL = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
-        try (Connection conn = DriverManager.getConnection(URL)) {
-            if (conn != null) {
-                //loop through all the FoodIDs in the FoodID column
-                for (Integer foodID : foodIDs.values()) {
-                    //check if the FoodID is in the fruit and veg food group
-                    sql = "SELECT COUNT(*) FROM foodName WHERE FoodID is " + foodID + " and (FoodGroupID is 9 or FoodGroupID is 11 or FoodGroupID is 12 or FoodGroupID is 14 or FoodGroupID is 16);";
-                    System.out.println(sql);
-                    Statement statement = conn.createStatement();
-                    ResultSet rs = statement.executeQuery(sql);
-                    if (rs.getInt(1) > 0) {
-                        result++;
-                    }
-                }
-                return result;
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        System.out.println("Fruit and Veg count not found");
-        return -1;
-    }
-
-    public static int getCalories(int foodID) {
+    public int getCalories(int foodID) {
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
