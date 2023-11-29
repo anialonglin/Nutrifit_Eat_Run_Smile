@@ -1,5 +1,6 @@
 package application;
 
+import java.sql.Date;
 import java.util.HashMap;
 
 public class exerciseManager {
@@ -25,12 +26,9 @@ public class exerciseManager {
 
 
     public static double avgExercise(String username) {
-        HashMap<String, Integer> exerciseIDs = dataAccess.UserProfile.database.getInstance().getExerciseIDs(username);
+        HashMap<Date, Integer> exerciseIDs = dataAccess.UserProfile.database.getInstance().getExerciseIDs(username);
         double average = 0;
         //get average calories burned per day
-        for (String date : exerciseIDs.keySet()) {
-            average += dataAccess.UserProfile.database.getInstance().dailyBurn(username, date);
-        }
         return average/exerciseIDs.keySet().size();
     }
 }

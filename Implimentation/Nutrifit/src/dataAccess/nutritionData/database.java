@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class database {
-
+    /*Singleton pattern*/
     private static database instance = null;
 
     public static database getInstance() {
@@ -17,11 +17,29 @@ public class database {
         return instance;
     }
 
+    /*Database creation*/
     private static void createDatabase(String url) {
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData();
                 System.out.println("Nutrition database created. Driver:" + meta.getDriverName());
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void wipeDB(String url) {
+        try (Connection conn = DriverManager.getConnection(url)) {
+            if (conn != null) {
+                DatabaseMetaData meta = conn.getMetaData();
+                Statement statement = conn.createStatement();
+                statement.execute("PRAGMA writable_schema = 1;");
+                statement.execute("delete from sqlite_master where type in ('table', 'index', 'trigger');");
+                statement.execute("PRAGMA writable_schema = 0;");
+                statement.execute("VACUUM;");
+                statement.execute("PRAGMA INTEGRITY_CHECK;");
+                System.out.println("Nutrition database wiped. Driver:" + meta.getDriverName());
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -49,14 +67,6 @@ public class database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    public static void main(String[] args) {
-        String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
-        wipeDB(url);
-        createDatabase(url);
-        initializeDatabase(url);
-        fillDatabase(url);
     }
 
     private static void fillDatabase(String url) {
@@ -415,40 +425,6 @@ public class database {
         }
     }
 
-    private static void wipeDB(String url) {
-        try (Connection conn = DriverManager.getConnection(url)) {
-            if (conn != null) {
-                DatabaseMetaData meta = conn.getMetaData();
-                Statement statement = conn.createStatement();
-                statement.execute("PRAGMA writable_schema = 1;");
-                statement.execute("delete from sqlite_master where type in ('table', 'index', 'trigger');");
-                statement.execute("PRAGMA writable_schema = 0;");
-                statement.execute("VACUUM;");
-                statement.execute("PRAGMA INTEGRITY_CHECK;");
-                System.out.println("Nutrition database wiped. Driver:" + meta.getDriverName());
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public static double getCalories(Integer FoodID) {
-        String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
-        double calories = 0;
-        String sql = "SELECT NutrientValue FROM nutrientAmount WHERE FoodID = ? AND NutrientID = 208";
-        try (Connection conn = DriverManager.getConnection(url)) {
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, FoodID);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                calories = rs.getDouble("Calories");
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return calories;
-    }
-
     public void loadDatabase() {
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
         wipeDB(url);
@@ -457,6 +433,15 @@ public class database {
         fillDatabase(url);
     }
 
+    public static void main(String[] args) {
+        String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
+        wipeDB(url);
+        createDatabase(url);
+        initializeDatabase(url);
+        fillDatabase(url);
+    }
+
+    /*Data retrieval*/
     public ArrayList<String> findFoodItem(String[] queryParams) {
         ArrayList<String> foodList = new ArrayList<>();
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
@@ -480,7 +465,24 @@ public class database {
         }
         return foodList;
     }
-    public int getProteinCount(HashMap<String, Integer> foodIDs) {
+
+    public int getID(String foodItem) {
+        String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
+        try (Connection conn = DriverManager.getConnection(url)) {
+            if (conn != null) {
+                DatabaseMetaData meta = conn.getMetaData();
+                Statement statement = conn.createStatement();
+                ResultSet rs = statement.executeQuery("SELECT FoodID FROM foodName WHERE FoodDescription is '" + foodItem + "';");
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println("ID not found");
+        return -1;
+    }
+
+    public int getProteinCount(HashMap<Date, Integer> foodIDs) {
         String sql;
         int result = 0;
         String URL = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
@@ -503,7 +505,7 @@ public class database {
         return -1;
     }
 
-    public int getCarbCount(HashMap<String, Integer> foodIDs) {
+    public int getCarbCount(HashMap<Date, Integer> foodIDs) {
         String sql;
         int result = 0;
         String URL = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
@@ -526,11 +528,7 @@ public class database {
         return -1;
     }
 
-    public int getFruitAndVegCount(HashMap<String, Integer> foodIDs) {
-        //print all of the foodIDs
-        for (Integer foodID : foodIDs.values()) {
-            System.out.println(foodID);
-        }
+    public int getFruitAndVegCount(HashMap<Date, Integer> foodIDs) {
         String sql;
         int result = 0;
         String URL = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
@@ -556,33 +554,13 @@ public class database {
         return -1;
     }
 
-    public int getID(String foodItem) {
+    public static int getCalories(int foodID) {
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
         try (Connection conn = DriverManager.getConnection(url)) {
             if (conn != null) {
                 DatabaseMetaData meta = conn.getMetaData();
                 Statement statement = conn.createStatement();
-                StringBuilder sql = new StringBuilder();
-                sql.append("SELECT FoodID FROM foodName WHERE FoodDescription is '").append(foodItem).append("';");
-                ResultSet rs = statement.executeQuery(sql.toString());
-                return rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        System.out.println("ID not found");
-        return -1;
-    }
-
-    public static int getCalories(int foodID){
-        String url = "jdbc:sqlite:Nutrifit/src/dataAccess/nutritionData/nutrition.db";
-        try (Connection conn = DriverManager.getConnection(url)) {
-            if (conn != null) {
-                DatabaseMetaData meta = conn.getMetaData();
-                Statement statement = conn.createStatement();
-                StringBuilder sql = new StringBuilder();
-                sql.append("SELECT NutrientValue FROM nutrientAmount WHERE FoodID is ").append(foodID).append(" and NutrientID is 208;");
-                ResultSet rs = statement.executeQuery(sql.toString());
+                ResultSet rs = statement.executeQuery("SELECT NutrientValue FROM nutrientAmount WHERE FoodID is " + foodID + " and NutrientID is 208;");
                 return rs.getInt(1);
             }
         } catch (SQLException e) {
@@ -591,5 +569,5 @@ public class database {
         System.out.println("Calories not found");
         return -1;
     }
-}
 
+}
