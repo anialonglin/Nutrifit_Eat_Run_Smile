@@ -19,8 +19,8 @@ public class database {
     /*database creation*/
     public static void main(String[] args) {
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/UserProfile/User.db";
-        wipeDB(url);
         createDatabase(url);
+        //wipeDB(url);
         initializeDatabase(url);
     }
 
