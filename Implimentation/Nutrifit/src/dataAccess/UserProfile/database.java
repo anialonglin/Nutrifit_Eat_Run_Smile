@@ -15,12 +15,12 @@ public class database {
         }
         return instance;
     }
-    /*database creation*/
 
+    /*database creation*/
     public static void main(String[] args) {
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/UserProfile/User.db";
-        wipeDB(url);
         createDatabase(url);
+        //wipeDB(url);
         initializeDatabase(url);
     }
 
@@ -95,13 +95,13 @@ public class database {
         }
     }
 
-    public void insertDietLog(String username, String date, String mealType, String foodItem, int foodID, int quantity) {
+    public void insertDietLog(String username, Date date, String mealType, String foodItem, int foodID, int quantity) {
         // Insert a new diet log into the DietLog table
         String sql = "INSERT INTO DietLog(username, Date, Meal_Type, Food_item, FoodID, Quantity) VALUES(?,?,?,?,?,?)";
 
         try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, username);
-            pstmt.setString(2, date);
+            pstmt.setDate(2, date);
             pstmt.setString(3, mealType);
             pstmt.setString(4, foodItem);
             pstmt.setInt(5, foodID);
@@ -206,7 +206,23 @@ public class database {
     }
 
     public HashMap<Date, Integer> getFoodIDs(String username, int days) {
-        return null;
+        //get all entrys with a Date within the last int days
+        HashMap<Date, Integer> foodIDs = new HashMap<>();
+        String sql = "SELECT Date, FoodID, Quantity FROM DietLog WHERE username is ? AND Date > ?";
+        try (Connection conn = this.connect()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, username);
+            pstmt.setDate(2, new Date(System.currentTimeMillis() - days * 86400000L));
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                for (int i = 0; i < rs.getInt("Quantity"); i++) {
+                    foodIDs.put(rs.getDate("Date"), rs.getInt("FoodID"));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return foodIDs;
     }
 
     public double dailyIntake(String username, Date date) {
@@ -326,9 +342,7 @@ public class database {
         return dailyBurn;
     }
 
-
     /*data modification*/
-    //personal
     public void deleteUserProfile(String username) {
         // Delete a user profile
         String sql = "DELETE FROM UserProfile WHERE username = ?";

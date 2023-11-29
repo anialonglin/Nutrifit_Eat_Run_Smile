@@ -7,7 +7,15 @@ import java.util.HashMap;
 
 public class foodManager {
     public static void addMeal(String username, String date, String mealType, String foodItem, int quantity) {
-        dataAccess.UserProfile.database.getInstance().insertDietLog(username, date, mealType, foodItem, dataAccess.nutritionData.database.getInstance().getID(foodItem), quantity);
+        //convert dd-MM-yyyy date to sql date
+        java.util.Date utilDate = null;
+        try {
+            utilDate = new java.text.SimpleDateFormat("dd-MM-yyyy").parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        dataAccess.UserProfile.database.getInstance().insertDietLog(username, sqlDate, mealType, foodItem, dataAccess.nutritionData.database.getInstance().getID(foodItem), quantity);
     }
 
     public static void reloadDatabase() {
@@ -20,14 +28,13 @@ public class foodManager {
     }
 
     public static double[] getAlignment(String username) {
-        HashMap<Date, Integer> foodIDs = getFoodIDs(username);
+        HashMap<Date, Integer> foodIDs = dataAccess.UserProfile.database.getInstance().getFoodIDs(username);
         return getPercentages(foodIDs);
     }
 
     public static double[] getAlignment(String username, int days) {
         //get foodIDs for the last int days
-        HashMap<Date, Integer> foodIDs = null;
-        foodIDs = getFoodIDs(username, days);
+        HashMap<Date, Integer> foodIDs = dataAccess.UserProfile.database.getInstance().getFoodIDs(username, days);
         return getPercentages(foodIDs);
     }
 
