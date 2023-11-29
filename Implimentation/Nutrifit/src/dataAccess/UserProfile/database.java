@@ -3,7 +3,6 @@ package dataAccess.UserProfile;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class database {
     /*Singleton pattern*/
@@ -21,7 +20,8 @@ public class database {
     public static void main(String[] args) {
         String url = "jdbc:sqlite:Nutrifit/src/dataAccess/UserProfile/User.db";
         createDatabase(url);
-        wipeDB(url);
+        //uncomment to wipe DB on startup
+        //wipeDB(url);
         initializeDatabase(url);
     }
 
@@ -65,7 +65,7 @@ public class database {
                 // Create DietLog table
                 statement.execute("CREATE TABLE IF NOT EXISTS DietLog (ID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, Date DATE, Meal_Type TEXT, Food_item TEXT, FoodID INTEGER, Quantity INTEGER, FOREIGN KEY (username) REFERENCES UserProfile(username));");
                 // Create ExerciseLog table
-                statement.execute("CREATE TABLE IF NOT EXISTS ExerciseLog (ID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, Date TEXT, Exercise_Type TEXT, Duration INTEGER, Intensity INTEGER, FOREIGN KEY (username) REFERENCES UserProfile(username));");
+                statement.execute("CREATE TABLE IF NOT EXISTS ExerciseLog (ID INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, Date DATE, Exercise_Type TEXT, Duration INTEGER, Intensity INTEGER, FOREIGN KEY (username) REFERENCES UserProfile(username));");
                 System.out.println("User database initialized. Driver:" + meta.getDriverName());
             }
         } catch (SQLException e) {
@@ -205,7 +205,7 @@ public class database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        System.out.println("getFoodID fin: "+foodIDs);
+        System.out.println("getFoodID fin: " + foodIDs);
         return foodIDs;
     }
 
@@ -249,20 +249,21 @@ public class database {
     }
 
     //exercise
-    public HashMap<Date, Integer> getExerciseIDs(String username) {
-        HashMap<Date, Integer> exerciseIDs = new HashMap<>();
+    public HashMap<Date, ArrayList<Integer>> getExerciseIDs(String username) {
+        HashMap<Date, ArrayList<Integer>> exerciseIDs = new HashMap<>();
         String sql = "SELECT Date, ID FROM ExerciseLog WHERE username is ?";
         try (Connection conn = this.connect()) {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
+            ArrayList<Integer> exerciseID = new ArrayList<>();
             while (rs.next()) {
-                exerciseIDs.put(rs.getDate("Date"), rs.getInt("ID"));
+                exerciseID.add(rs.getInt("ID"));
+                exerciseIDs.put(rs.getDate("Date"), exerciseID);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("HERE: "+e.getMessage());
         }
-        System.out.println("getExerciseID "+exerciseIDs);
         return exerciseIDs;
     }
 
@@ -318,7 +319,7 @@ public class database {
         return duration;
     }
 
-    public static double calorieBurned(String username, int exerciseID) {
+    public double calorieBurned(String username, int exerciseID) {
         double burn = switch (database.getInstance().getExerciseIntensity(exerciseID)) {
             case 1 ->
                     (database.getInstance().getExerciseDuration(exerciseID) * 2 * database.getInstance().getWeight(username)) / 200;
