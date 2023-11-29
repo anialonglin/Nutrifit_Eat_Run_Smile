@@ -94,6 +94,7 @@ public class DietLoggingPanel extends JPanel {
 
         // Add code to save the diet entry to your data storage (e.g., database)
         foodManager.addMeal(username, date, mealType, foodItem, quantity);
+
         // Show a confirmation message
         JOptionPane.showMessageDialog(this, "Diet entry logged successfully!");
 

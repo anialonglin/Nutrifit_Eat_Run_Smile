@@ -42,7 +42,7 @@ public class CalorieExerciseChart extends JPanel {
             CalorieExerciseChart chart = new CalorieExerciseChart("Calorie and Exercise Chart", username);
             JFrame frame = new JFrame("CalorieExerciseChart Management");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(800, 600);
+            frame.setSize(900, 800);
             frame.add(chart);
             frame.setVisible(true);
         });
