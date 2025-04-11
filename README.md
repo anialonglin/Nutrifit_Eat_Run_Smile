@@ -1,8 +1,8 @@
-# EECS3311-PROJECT
+# Nutrifit: Fitness Tracking App
 
 General Functionality
 “Nutrifit: Eat, Run, Smile!”
-You are developing an application that helps the user to keep a journal of their diet and exercise. 
+An application that helps the user to keep a journal of their diet and exercise. 
 The user will log what they eat every day, in terms of food items and the application will determine nutrient and calory intake as well as food groups represented in the meals, based on the Canadian Nutrient File (CNF). 
 The application aims at helping the user to break down their calory intake in food groups and monitor how well the align with the Canada Food Guide. 
 Using the logged exercise data, the application will calculate the Basal Metabolic Rate (BMR), based on which the application can calculate the calories burnt based on various levels of exercise. 
@@ -10,8 +10,8 @@ Based on this, the user can find out how much weight they can lose based on thei
 
 Implementation for deliverables is in the "implementation" folder. 
 
-Group Members:
-  Long Lin - anialonglin;
+Contributing Members:
+  Long(Ania) Lin - anialonglin;
   Amsal Ali - ali-amsal;
   Judah Goldstein - JudahGoldstein;
   Mukul Chauhan - Mukul9090;
